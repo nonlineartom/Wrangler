@@ -15,27 +15,28 @@ struct ContentView: View {
             case .ingest: "arrow.right.doc.on.clipboard"
             }
         }
-
-        var description: String {
-            switch self {
-            case .backup: "Sync & verify directories"
-            case .ingest: "Copy between volumes"
-            }
-        }
     }
 
     var body: some View {
-        TabView(selection: $selectedMode) {
-            Tab(AppMode.backup.rawValue, systemImage: AppMode.backup.icon, value: .backup) {
-                backupModeView
+        NavigationSplitView {
+            List(AppMode.allCases, id: \.self, selection: $selectedMode) { mode in
+                Label(mode.rawValue, systemImage: mode.icon)
+                    .tag(mode)
             }
-
-            Tab(AppMode.ingest.rawValue, systemImage: AppMode.ingest.icon, value: .ingest) {
-                ingestModeView
+            .listStyle(.sidebar)
+            .navigationSplitViewColumnWidth(min: 160, ideal: 180, max: 200)
+        } detail: {
+            Group {
+                switch selectedMode {
+                case .backup:
+                    backupModeView
+                case .ingest:
+                    ingestModeView
+                }
             }
+            .frame(minWidth: 900, minHeight: 600)
         }
-        .tabViewStyle(.sidebarAdaptable)
-        .frame(minWidth: 1200, minHeight: 700)
+        .frame(minWidth: 1100, minHeight: 700)
     }
 
     @ViewBuilder
@@ -43,24 +44,22 @@ struct ContentView: View {
         switch backupSession.phase {
         case .setup:
             BackupSetupView(session: backupSession)
-
         case .scanning:
             scanningView
-
         case .diffReview:
             DiffView(session: backupSession)
-
         case .syncing:
             BackupProgressView(session: backupSession)
-
         case .dashboard:
             if let report = backupSession.syncReport {
-                BackupDashboardView(session: backupSession)
-                    .navigationDestination(for: String.self) { value in
-                        if value == "report" {
-                            ReportView(report: report)
+                NavigationStack {
+                    BackupDashboardView(session: backupSession)
+                        .navigationDestination(for: String.self) { value in
+                            if value == "report" {
+                                ReportView(report: report)
+                            }
                         }
-                    }
+                }
             }
         }
     }
@@ -68,25 +67,20 @@ struct ContentView: View {
     private var scanningView: some View {
         VStack(spacing: 20) {
             Spacer()
-
             ProgressView()
                 .scaleEffect(1.5)
-
             Text("Analyzing Differences...")
                 .font(.title2)
                 .fontWeight(.semibold)
-
             if let progress = backupSession.scanProgress {
                 VStack(spacing: 4) {
                     Text(progress.phase)
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
-
                     Text("\(progress.filesScanned) files scanned")
                         .font(.caption)
                         .foregroundStyle(.tertiary)
                         .monospacedDigit()
-
                     if !progress.currentPath.isEmpty {
                         Text(progress.currentPath)
                             .font(.caption2)
@@ -97,7 +91,6 @@ struct ContentView: View {
                     }
                 }
             }
-
             Spacer()
         }
         .frame(maxWidth: .infinity)

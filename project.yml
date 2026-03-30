@@ -2,7 +2,7 @@ name: Wrangler
 options:
   bundleIdPrefix: com.wrangler
   deploymentTarget:
-    macOS: "15.0"
+    macOS: "14.0"
   xcodeVersion: "16.0"
   createIntermediateGroups: true
   defaultConfig: Debug
@@ -10,7 +10,7 @@ options:
 settings:
   base:
     SWIFT_VERSION: "5.0"
-    MACOSX_DEPLOYMENT_TARGET: "15.0"
+    MACOSX_DEPLOYMENT_TARGET: "14.0"
 
 targets:
   Wrangler:
