@@ -33,14 +33,14 @@ final class IngestSession {
             .reduce(Int64(0)) { $0 + $1.fileSize }
     }
 
-    /// Available capacity on the destination volume (uses important-usage key
-    /// which accounts for purgeable space, same as Finder's "X GB available").
+    /// Available capacity on the destination volume.
     var destinationAvailableBytes: Int64 {
+        // destModel.volumeInfo is populated by VolumeDetector via FileBrowserModel.navigate()
+        // and is the same value shown in the pane header — reliable for all volume types.
+        if let cap = destModel.volumeInfo?.availableCapacity, cap > 0 { return cap }
+        // Fallback: query the volume directly
         guard let destURL = destModel.currentURL else { return 0 }
-        let values = try? destURL.resourceValues(
-            forKeys: [.volumeAvailableCapacityForImportantUsageKey]
-        )
-        return values?.volumeAvailableCapacityForImportantUsage ?? 0
+        return VolumeDetector.volumeInfo(for: destURL)?.availableCapacity ?? 0
     }
 
     /// False when selected bytes exceed destination free space.
@@ -63,17 +63,38 @@ final class IngestSession {
         phase = .copying
         copyProgress = .idle
 
-        let filesToCopy: [(source: URL, destination: URL, relativePath: String, size: Int64)] =
-            selectedFiles.compactMap { path in
-                guard let sourceURL = sourceModel.currentURL else { return nil }
-                let fullSourceURL = sourceURL.appendingPathComponent(path)
-                let fullDestURL = destURL.appendingPathComponent(path)
+        // Expand selected paths — recurse into directories so the copy engine
+        // only ever sees individual files, not folder entries.
+        var filesToCopy: [(source: URL, destination: URL, relativePath: String, size: Int64)] = []
+        guard let sourceBase = sourceModel.currentURL else {
+            isCopying = false; phase = .browsing; return
+        }
 
-                let attrs = try? FileManager.default.attributesOfItem(atPath: fullSourceURL.path)
-                let size = (attrs?[.size] as? Int64) ?? 0
+        for path in selectedFiles {
+            let srcURL = sourceBase.appendingPathComponent(path)
+            var isDir: ObjCBool = false
+            guard FileManager.default.fileExists(atPath: srcURL.path, isDirectory: &isDir) else { continue }
 
-                return (fullSourceURL, fullDestURL, path, size)
+            if isDir.boolValue {
+                // Enumerate directory contents recursively
+                let enumerator = FileManager.default.enumerator(
+                    at: srcURL,
+                    includingPropertiesForKeys: [.fileSizeKey, .isDirectoryKey],
+                    options: [.skipsHiddenFiles]
+                )
+                while let fileURL = enumerator?.nextObject() as? URL {
+                    var isFileDir: ObjCBool = false
+                    FileManager.default.fileExists(atPath: fileURL.path, isDirectory: &isFileDir)
+                    guard !isFileDir.boolValue else { continue }
+                    let relPath = String(fileURL.path.dropFirst(sourceBase.path.count + 1))
+                    let size = (try? fileURL.resourceValues(forKeys: [.fileSizeKey]))?.fileSize.map { Int64($0) } ?? 0
+                    filesToCopy.append((fileURL, destURL.appendingPathComponent(relPath), relPath, size))
+                }
+            } else {
+                let size = (try? srcURL.resourceValues(forKeys: [.fileSizeKey]))?.fileSize.map { Int64($0) } ?? 0
+                filesToCopy.append((srcURL, destURL.appendingPathComponent(path), path, size))
             }
+        }
 
         do {
             let result = try await copyEngine.copyFiles(

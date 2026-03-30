@@ -65,6 +65,11 @@ struct IngestView: View {
             session.selectedFiles = Set(allPaths)
             return .handled
         }
+        .onChange(of: session.sourceModel.entries) { _, newEntries in
+            guard !newEntries.isEmpty else { return }
+            // Auto-select everything in the new folder
+            session.selectedFiles = Set(newEntries.map(\.relativePath))
+        }
     }
 
     // MARK: - Centre action panel
@@ -105,7 +110,7 @@ struct IngestView: View {
                             .font(.title2.bold())
                             .monospacedDigit()
                             .foregroundStyle(.primary)
-                        Text(session.selectedFiles.count == 1 ? "file" : "files")
+                        Text(session.selectedFiles.count == 1 ? "item" : "items")
                             .font(.caption2)
                             .foregroundStyle(.secondary)
                     }
