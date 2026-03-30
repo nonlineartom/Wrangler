@@ -296,7 +296,7 @@ actor CopyEngine {
             let data = sourceHandle.readData(ofLength: Self.chunkSize)
             if data.isEmpty { break }
 
-            destHandle.write(data)
+            try destHandle.write(contentsOf: data)
             currentBytes += Int64(data.count)
 
             let blocksCompleted = Int(ceil(Double(currentBytes) / Double(Self.chunkSize)))
@@ -317,8 +317,7 @@ actor CopyEngine {
             ))
         }
 
-        try destHandle.close()
-        return fileSize
+        return currentBytes - bytesAlreadyWritten
     }
 
     // MARK: - Progress helper

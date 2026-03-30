@@ -83,6 +83,20 @@ struct IngestView: View {
                         .foregroundStyle(.quaternary)
                         .multilineTextAlignment(.center)
                 }
+            } else if session.destModel.currentURL == nil {
+                VStack(spacing: 6) {
+                    Image(systemName: "arrow.right.circle")
+                        .font(.system(size: 32))
+                        .foregroundStyle(.quaternary)
+                    Text("Choose a\ndestination")
+                        .font(.caption2)
+                        .foregroundStyle(.quaternary)
+                        .multilineTextAlignment(.center)
+                    Text("\(session.selectedFiles.count) file\(session.selectedFiles.count == 1 ? "" : "s") ready")
+                        .font(.system(size: 9))
+                        .foregroundStyle(.tertiary)
+                        .monospacedDigit()
+                }
             } else {
                 VStack(spacing: 8) {
                     // File count badge

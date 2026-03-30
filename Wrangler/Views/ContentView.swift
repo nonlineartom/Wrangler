@@ -50,6 +50,11 @@ struct ContentView: View {
             }
         }
         .frame(minWidth: 1100, minHeight: 764)
+        .alert("Error", isPresented: $backupSession.showError) {
+            Button("OK") { backupSession.showError = false }
+        } message: {
+            Text(backupSession.error?.localizedDescription ?? "An unexpected error occurred.")
+        }
     }
 
     // MARK: - Sidebar

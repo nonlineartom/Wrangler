@@ -85,7 +85,6 @@ final class FileBrowserModel {
 
     private func loadEntries() {
         guard let url = currentURL else { return }
-
         isLoading = true
 
         let keys: [URLResourceKey] = [
@@ -96,33 +95,34 @@ final class FileBrowserModel {
             .nameKey
         ]
 
-        do {
-            let contents = try FileManager.default.contentsOfDirectory(
-                at: url,
-                includingPropertiesForKeys: keys,
-                options: [.skipsHiddenFiles]
-            )
+        Task {
+            let loaded: [FileEntry] = await Task.detached(priority: .userInitiated) {
+                guard let contents = try? FileManager.default.contentsOfDirectory(
+                    at: url,
+                    includingPropertiesForKeys: keys,
+                    options: [.skipsHiddenFiles]
+                ) else { return [] }
 
-            entries = contents.compactMap { fileURL in
-                guard let values = try? fileURL.resourceValues(forKeys: Set(keys)) else { return nil }
+                return contents.compactMap { fileURL -> FileEntry? in
+                    guard let values = try? fileURL.resourceValues(forKeys: Set(keys)) else { return nil }
+                    return FileEntry(
+                        relativePath: fileURL.lastPathComponent,
+                        fileName: values.name ?? fileURL.lastPathComponent,
+                        isDirectory: values.isDirectory ?? false,
+                        fileSize: Int64(values.fileSize ?? 0),
+                        modificationDate: values.contentModificationDate ?? .distantPast,
+                        creationDate: values.creationDate,
+                        ownerName: FileManager.default.ownerOfItem(atPath: fileURL.path)
+                    )
+                }
+            }.value
 
-                return FileEntry(
-                    relativePath: fileURL.lastPathComponent,
-                    fileName: values.name ?? fileURL.lastPathComponent,
-                    isDirectory: values.isDirectory ?? false,
-                    fileSize: Int64(values.fileSize ?? 0),
-                    modificationDate: values.contentModificationDate ?? .distantPast,
-                    creationDate: values.creationDate,
-                    ownerName: FileManager.default.ownerOfItem(atPath: fileURL.path)
-                )
+            await MainActor.run {
+                self.entries = loaded
+                self.sortEntries()
+                self.isLoading = false
             }
-
-            sortEntries()
-        } catch {
-            entries = []
         }
-
-        isLoading = false
     }
 
     func sortEntries() {

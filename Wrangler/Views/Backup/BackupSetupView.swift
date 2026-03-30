@@ -38,6 +38,14 @@ struct BackupSetupView: View {
                         .font(.title2)
                         .foregroundStyle(.tint)
 
+                    if let src = session.sourceURL, let dest = session.destinationURL,
+                       src.standardized.path == dest.standardized.path {
+                        Label("Source and destination cannot be the same folder", systemImage: "exclamationmark.triangle.fill")
+                            .font(.caption)
+                            .foregroundStyle(.red)
+                            .padding(.vertical, 4)
+                    }
+
                     DirectoryPickerView(
                         label: "Destination",
                         icon: "server.rack",

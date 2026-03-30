@@ -34,7 +34,8 @@ final class BackupSession {
     var destEntries: [FileEntry] = []
 
     var canStartScan: Bool {
-        sourceURL != nil && destinationURL != nil && !isScanning
+        guard let src = sourceURL, let dest = destinationURL, !isScanning else { return false }
+        return src.standardized.path != dest.standardized.path
     }
 
     var canStartSync: Bool {
@@ -135,6 +136,13 @@ final class BackupSession {
             )
         }
 
+        let modDateLookup: [String: Date] = Dictionary(
+            uniqueKeysWithValues: filesToSync.compactMap { entry -> (String, Date)? in
+                guard let srcEntry = entry.sourceEntry else { return nil }
+                return (entry.relativePath, srcEntry.modificationDate)
+            }
+        )
+
         let startTime = Date.now
 
         do {
@@ -156,11 +164,11 @@ final class BackupSession {
                 destinationRoot: dest,
                 duration: duration,
                 averageThroughput: copyProgress.throughputBytesPerSecond,
-                filesCopied: completed.filter { _ in true }.map { file in
+                filesCopied: completed.map { file in
                     SyncedFileRecord(
                         relativePath: file.relativePath,
                         fileSize: file.fileSize,
-                        modificationDate: .now,
+                        modificationDate: modDateLookup[file.relativePath] ?? .now,
                         ownerName: nil,
                         action: .copied,
                         checksum: file.checksum

@@ -2,6 +2,7 @@ import SwiftUI
 
 struct IngestProgressView: View {
     @Bindable var session: IngestSession
+    @State private var showCancelConfirm = false
 
     var body: some View {
         VStack(spacing: 20) {
@@ -85,10 +86,18 @@ struct IngestProgressView: View {
 
             // Cancel button
             Button("Cancel") {
-                Task { await session.cancelCopy() }
+                showCancelConfirm = true
             }
             .buttonStyle(.bordered)
             .padding(.bottom)
+            .confirmationDialog("Cancel Transfer?", isPresented: $showCancelConfirm, titleVisibility: .visible) {
+                Button("Cancel Transfer", role: .destructive) {
+                    Task { await session.cancelCopy() }
+                }
+                Button("Continue", role: .cancel) { }
+            } message: {
+                Text("The partial files written so far will be cleaned up.")
+            }
         }
         .background(.background)
     }
