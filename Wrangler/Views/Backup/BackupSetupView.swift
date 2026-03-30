@@ -21,7 +21,7 @@ struct BackupSetupView: View {
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
                 }
-                .padding(.top, 40)
+                .padding(.top, 32)
 
                 // Directory selectors
                 VStack(spacing: 12) {
@@ -30,6 +30,9 @@ struct BackupSetupView: View {
                         icon: "externaldrive.fill",
                         selectedURL: $session.sourceURL
                     )
+                    .onChange(of: session.sourceURL) {
+                        Task { await session.loadSourceEntries() }
+                    }
 
                     Image(systemName: "arrow.down.circle.fill")
                         .font(.title2)
@@ -40,8 +43,23 @@ struct BackupSetupView: View {
                         icon: "server.rack",
                         selectedURL: $session.destinationURL
                     )
+                    .onChange(of: session.destinationURL) {
+                        Task { await session.loadDestEntries() }
+                    }
                 }
-                .padding(.horizontal, 60)
+                .padding(.horizontal, 40)
+
+                // Treemap — shown as soon as at least one directory is selected
+                if !session.sourceEntries.isEmpty || !session.destEntries.isEmpty {
+                    DualTreemapPanel(
+                        sourceEntries: session.sourceEntries,
+                        destEntries: session.destEntries,
+                        sourceTitle: session.sourceURL?.lastPathComponent ?? "Source",
+                        destTitle: session.destinationURL?.lastPathComponent ?? "Destination"
+                    )
+                    .padding(.horizontal, 20)
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+                }
 
                 // Start button
                 Button {
@@ -53,10 +71,11 @@ struct BackupSetupView: View {
                 .buttonStyle(.borderedProminent)
                 .controlSize(.large)
                 .disabled(!session.canStartScan)
-
-                Spacer()
+                .padding(.bottom, 32)
             }
             .padding()
+            .animation(.default, value: session.sourceEntries.count)
+            .animation(.default, value: session.destEntries.count)
         }
     }
 }

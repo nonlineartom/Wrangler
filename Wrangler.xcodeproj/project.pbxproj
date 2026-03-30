@@ -22,6 +22,7 @@
 		542790BB409303B0F489093F /* MediaThumbnailGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC38AE60D2CB4F7EB4C14CEC /* MediaThumbnailGrid.swift */; };
 		5E5C591F2AD2845EBC8D3C5C /* DiffRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB0F4701C9F1DB8C91C7002 /* DiffRowView.swift */; };
 		5FCF4869E97A2BCE8CD7A123 /* DiffEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909CC2F597D474547480C5C8 /* DiffEngine.swift */; };
+		6294D0AE842F10658A38E02A /* TreemapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B678CBB309568E394CCF617 /* TreemapView.swift */; };
 		672D96A113C9363F689CAECD /* VolumeDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E632D979C752888FD1A0465 /* VolumeDetector.swift */; };
 		6D2B2695A03AC9A55753C1F4 /* DiffView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 693BF526529149C36BC736E0 /* DiffView.swift */; };
 		71EA3731001AF53CCD20FA58 /* FileInspectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575F7A472ABE8F859FFC6642 /* FileInspectorView.swift */; };
@@ -86,6 +87,7 @@
 		5E632D979C752888FD1A0465 /* VolumeDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeDetector.swift; sourceTree = "<group>"; };
 		693BF526529149C36BC736E0 /* DiffView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffView.swift; sourceTree = "<group>"; };
 		6DEA78770AF2590E0B8D4F5A /* FileBrowserPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileBrowserPane.swift; sourceTree = "<group>"; };
+		7B678CBB309568E394CCF617 /* TreemapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreemapView.swift; sourceTree = "<group>"; };
 		7F6EAAC486DD8E33C2396961 /* ThroughputGaugeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThroughputGaugeView.swift; sourceTree = "<group>"; };
 		85219AC927D25370B4E27DF5 /* ThumbnailEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailEngine.swift; sourceTree = "<group>"; };
 		88BE8495AE52A84F6A0D866A /* ReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportView.swift; sourceTree = "<group>"; };
@@ -215,6 +217,7 @@
 				19FFA48B8372991ADB7E2202 /* DirectoryPickerView.swift */,
 				CC38AE60D2CB4F7EB4C14CEC /* MediaThumbnailGrid.swift */,
 				7F6EAAC486DD8E33C2396961 /* ThroughputGaugeView.swift */,
+				7B678CBB309568E394CCF617 /* TreemapView.swift */,
 				4B8301B82242E38EA9FAD9B8 /* VolumeInfoView.swift */,
 			);
 			path = Shared;
@@ -401,6 +404,7 @@
 				9978CA831A2252D82BA64BBD /* SyncReport.swift in Sources */,
 				448EE9E31ACBD7D2CB198701 /* ThroughputGaugeView.swift in Sources */,
 				C0E8E390ECFAB3B72D6DA681 /* ThumbnailEngine.swift in Sources */,
+				6294D0AE842F10658A38E02A /* TreemapView.swift in Sources */,
 				672D96A113C9363F689CAECD /* VolumeDetector.swift in Sources */,
 				4E3F7B7CAA0B0D4BBFFF125C /* VolumeInfoView.swift in Sources */,
 				C52D987FD7EFD57BB4B828B6 /* WranglerApp.swift in Sources */,

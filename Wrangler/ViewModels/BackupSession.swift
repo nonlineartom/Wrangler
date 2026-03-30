@@ -29,6 +29,10 @@ final class BackupSession {
     var isScanning = false
     var isSyncing = false
 
+    // Quick directory listings for treemap (populated when directories are selected)
+    var sourceEntries: [FileEntry] = []
+    var destEntries: [FileEntry] = []
+
     var canStartScan: Bool {
         sourceURL != nil && destinationURL != nil && !isScanning
     }
@@ -37,6 +41,41 @@ final class BackupSession {
         !diffResult.entries.isEmpty &&
         (diffResult.summary.newOnSourceCount > 0 || diffResult.summary.modifiedCount > 0) &&
         !isSyncing
+    }
+
+    func quickScan(url: URL) async -> [FileEntry] {
+        let keys: Set<URLResourceKey> = [.fileSizeKey, .contentModificationDateKey, .isDirectoryKey, .nameKey]
+        guard let enumerator = FileManager.default.enumerator(
+            at: url,
+            includingPropertiesForKeys: Array(keys),
+            options: [.skipsHiddenFiles]
+        ) else { return [] }
+
+        var entries: [FileEntry] = []
+        for case let fileURL as URL in enumerator {
+            guard let values = try? fileURL.resourceValues(forKeys: keys) else { continue }
+            let relativePath = fileURL.path.replacingOccurrences(of: url.path + "/", with: "")
+            entries.append(FileEntry(
+                relativePath: relativePath,
+                fileName: values.name ?? fileURL.lastPathComponent,
+                isDirectory: values.isDirectory ?? false,
+                fileSize: Int64(values.fileSize ?? 0),
+                modificationDate: values.contentModificationDate ?? .distantPast
+            ))
+        }
+        return entries
+    }
+
+    func loadSourceEntries() async {
+        guard let url = sourceURL else { sourceEntries = []; return }
+        let entries = await quickScan(url: url)
+        await MainActor.run { sourceEntries = entries }
+    }
+
+    func loadDestEntries() async {
+        guard let url = destinationURL else { destEntries = []; return }
+        let entries = await quickScan(url: url)
+        await MainActor.run { destEntries = entries }
     }
 
     func startScan() async {
