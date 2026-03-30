@@ -7,6 +7,7 @@ struct DirectoryPickerView: View {
     var volumeInfo: VolumeInfo?
 
     @State private var isTargeted = false
+    @State private var connectionInfo: DriveConnectionInfo?
 
     var body: some View {
         GroupBox {
@@ -38,8 +39,8 @@ struct DirectoryPickerView: View {
                                 .lineLimit(1)
                                 .truncationMode(.middle)
 
-                            if let vi = volumeInfo ?? VolumeDetector.volumeInfo(for: url) {
-                                HStack(spacing: 12) {
+                            HStack(spacing: 8) {
+                                if let vi = volumeInfo ?? VolumeDetector.volumeInfo(for: url) {
                                     Label(vi.typeLabel, systemImage: vi.typeIcon)
                                         .font(.caption)
                                         .foregroundStyle(.secondary)
@@ -47,6 +48,10 @@ struct DirectoryPickerView: View {
                                     Text("\(ByteCountFormatting.string(fromByteCount: vi.availableCapacity)) free")
                                         .font(.caption)
                                         .foregroundStyle(.secondary)
+                                }
+
+                                if let conn = connectionInfo {
+                                    ConnectionBadge(info: conn)
                                 }
                             }
                         }
@@ -63,6 +68,9 @@ struct DirectoryPickerView: View {
                     }
                     .padding(8)
                     .background(.quaternary, in: RoundedRectangle(cornerRadius: 6))
+                    .task(id: url) {
+                        connectionInfo = DriveConnectionDetector.detect(for: url)
+                    }
                 } else {
                     HStack {
                         Spacer()

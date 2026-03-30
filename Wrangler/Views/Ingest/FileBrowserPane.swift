@@ -8,6 +8,8 @@ struct FileBrowserPane: View {
     let thumbnails: [String: NSImage]
     var onNavigate: ((URL) -> Void)?
 
+    @State private var connectionInfo: DriveConnectionInfo?
+
     var body: some View {
         VStack(spacing: 0) {
             // Header with volume info
@@ -35,6 +37,10 @@ struct FileBrowserPane: View {
                 emptyState
             }
         }
+        .task(id: model.currentURL) {
+            guard let url = model.currentURL else { connectionInfo = nil; return }
+            connectionInfo = DriveConnectionDetector.detect(for: url)
+        }
     }
 
     private var paneHeader: some View {
@@ -44,6 +50,10 @@ struct FileBrowserPane: View {
                 .fontWeight(.semibold)
 
             Spacer()
+
+            if let conn = connectionInfo {
+                ConnectionBadge(info: conn)
+            }
 
             if let vi = model.volumeInfo {
                 CapacityBarView(usage: vi.usagePercent)

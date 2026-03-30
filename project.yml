@@ -18,6 +18,9 @@ targets:
     platform: macOS
     sources:
       - path: Wrangler
+    dependencies:
+      - sdk: DiskArbitration.framework
+      - sdk: IOKit.framework
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.wrangler.app
