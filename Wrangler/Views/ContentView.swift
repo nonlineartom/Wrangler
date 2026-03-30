@@ -24,10 +24,17 @@ struct ContentView: View {
         }
     }
 
+    private var isTransferring: Bool {
+        backupSession.phase == .syncing ||
+        ingestSession.phase == .copying
+    }
+
     var body: some View {
         VStack(spacing: 0) {
-            StorageMonitorBar()
-            Divider()
+            if isTransferring {
+                StorageMonitorBar()
+                Divider()
+            }
 
             NavigationSplitView {
                 sidebarContent

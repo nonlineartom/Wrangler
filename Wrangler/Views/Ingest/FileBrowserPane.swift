@@ -167,15 +167,12 @@ struct FileBrowserPane: View {
                 thumbnail: thumbnails[entry.relativePath],
                 baseURL: model.currentURL
             )
-            .contentShape(Rectangle())
-            .simultaneousGesture(
-                TapGesture(count: 2).onEnded {
-                    guard entry.isDirectory, let url = model.currentURL else { return }
-                    let newURL = url.appendingPathComponent(entry.fileName)
-                    model.navigate(to: newURL)
-                    onNavigate?(newURL)
-                }
-            )
+            .onTapGesture(count: 2) {
+                guard entry.isDirectory, let url = model.currentURL else { return }
+                let newURL = url.appendingPathComponent(entry.fileName)
+                model.navigate(to: newURL)
+                onNavigate?(newURL)
+            }
             .tag(entry.relativePath)
         }
         .listStyle(.inset(alternatesRowBackgrounds: true))
