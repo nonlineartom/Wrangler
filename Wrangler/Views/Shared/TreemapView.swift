@@ -227,28 +227,46 @@ extension TreemapNode {
 struct TreemapView: View {
     let entries: [FileEntry]
     let title: String
+    var baseURL: URL?           // used for Quick Look and Reveal in Finder
     var onSelect: ((FileEntry) -> Void)?
 
     @State private var nodes: [TreemapNode] = []
     @State private var hoveredPath: String?
     @State private var selectedEntry: FileEntry?
+    @FocusState private var isFocused: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            // Header
-            HStack {
+            // Header bar — shows hovered/selected path
+            HStack(spacing: 6) {
                 Text(title)
                     .font(.subheadline)
                     .fontWeight(.semibold)
 
                 Spacer()
 
-                if let hovered = hoveredPath {
-                    Text(hovered)
+                if let entry = selectedEntry ?? hoveredEntry {
+                    Text(entry.relativePath)
                         .font(.caption.monospaced())
                         .foregroundStyle(.secondary)
                         .lineLimit(1)
                         .truncationMode(.head)
+
+                    if !entry.isDirectory {
+                        Text(ByteCountFormatting.string(fromByteCount: entry.fileSize))
+                            .font(.caption2.monospaced())
+                            .foregroundStyle(.tertiary)
+                    }
+                }
+
+                if selectedEntry != nil {
+                    // Space = Quick Look hint
+                    Text("␣ preview")
+                        .font(.caption2)
+                        .foregroundStyle(.quaternary)
+                        .padding(.horizontal, 5)
+                        .padding(.vertical, 2)
+                        .background(.quaternary.opacity(0.5), in: RoundedRectangle(cornerRadius: 3))
                 }
             }
             .padding(.horizontal, 10)
@@ -260,18 +278,17 @@ struct TreemapView: View {
             // Treemap canvas
             GeometryReader { geo in
                 ZStack {
-                    // Background
-                    Rectangle()
-                        .fill(Color(.windowBackgroundColor))
+                    Rectangle().fill(Color(.windowBackgroundColor))
 
-                    // Draw nodes
                     Canvas { ctx, size in
                         drawNodes(nodes, in: ctx, canvasSize: size)
                     }
 
-                    // Hover overlay (transparent capture layer)
+                    // Interaction overlay
                     Color.clear
                         .contentShape(Rectangle())
+                        .focused($isFocused)
+                        .focusable()
                         .onContinuousHover { phase in
                             switch phase {
                             case .active(let location):
@@ -281,19 +298,58 @@ struct TreemapView: View {
                             }
                         }
                         .onTapGesture { location in
-                            if let node = findNode(at: location, in: nodes) {
-                                let entry = entries.first { $0.relativePath == node.relativePath }
+                            isFocused = true
+                            if let node = findNode(at: location, in: nodes),
+                               let entry = entries.first(where: { $0.relativePath == node.relativePath }) {
                                 selectedEntry = entry
-                                if let entry { onSelect?(entry) }
+                                onSelect?(entry)
+                            } else {
+                                selectedEntry = nil
+                            }
+                        }
+                        // Space bar → Quick Look
+                        .onKeyPress(.space) {
+                            guard let entry = selectedEntry,
+                                  let url = fullURL(for: entry) else { return .ignored }
+                            QuickLookHelper.preview(url: url)
+                            return .handled
+                        }
+                        // Context menu: Reveal in Finder + Quick Look
+                        .contextMenu {
+                            let target = hoveredEntry ?? selectedEntry
+                            if let entry = target, let url = fullURL(for: entry) {
+                                Button {
+                                    NSWorkspace.shared.activateFileViewerSelecting([url])
+                                } label: {
+                                    Label("Reveal in Finder", systemImage: "folder")
+                                }
+
+                                Button {
+                                    QuickLookHelper.preview(url: url)
+                                } label: {
+                                    Label("Quick Look", systemImage: "eye")
+                                }
+
+                                Divider()
+
+                                Button {
+                                    NSPasteboard.general.clearContents()
+                                    NSPasteboard.general.setString(entry.relativePath, forType: .string)
+                                } label: {
+                                    Label("Copy Relative Path", systemImage: "doc.on.clipboard")
+                                }
+
+                                Button {
+                                    NSPasteboard.general.clearContents()
+                                    NSPasteboard.general.setString(url.path, forType: .string)
+                                } label: {
+                                    Label("Copy Full Path", systemImage: "doc.on.doc")
+                                }
                             }
                         }
                 }
-                .onChange(of: entries.count) {
-                    rebuildLayout(in: geo.size)
-                }
-                .onAppear {
-                    rebuildLayout(in: geo.size)
-                }
+                .onChange(of: entries.count) { rebuildLayout(in: geo.size) }
+                .onAppear { rebuildLayout(in: geo.size) }
             }
         }
         .clipShape(RoundedRectangle(cornerRadius: 6))
@@ -301,6 +357,15 @@ struct TreemapView: View {
             RoundedRectangle(cornerRadius: 6)
                 .strokeBorder(.separator, lineWidth: 0.5)
         )
+    }
+
+    private var hoveredEntry: FileEntry? {
+        guard let path = hoveredPath else { return nil }
+        return entries.first { $0.relativePath == path }
+    }
+
+    private func fullURL(for entry: FileEntry) -> URL? {
+        baseURL?.appendingPathComponent(entry.relativePath)
     }
 
     private func rebuildLayout(in size: CGSize) {
@@ -335,19 +400,19 @@ struct TreemapView: View {
 
             } else {
                 // File: fill with colour, stroke border
-                let isHovered = hoveredPath == node.relativePath
+                let isHovered   = hoveredPath    == node.relativePath
+                let isSelected  = selectedEntry?.relativePath == node.relativePath
                 let color = node.displayColor
-                let fillColor = isHovered ? color.opacity(0.95) : color.opacity(0.75)
+                let fillColor = (isHovered || isSelected) ? color.opacity(0.95) : color.opacity(0.75)
 
                 ctx.fill(Path(node.rect), with: .color(fillColor))
 
-                ctx.stroke(
-                    Path(node.rect),
-                    with: .color(.black.opacity(0.3)),
-                    lineWidth: 0.5
-                )
-
-                // Filename shown in hover tooltip above canvas
+                if isSelected {
+                    // Bold white selection border
+                    ctx.stroke(Path(node.rect), with: .color(.white.opacity(0.9)), lineWidth: 2)
+                } else {
+                    ctx.stroke(Path(node.rect), with: .color(.black.opacity(0.3)), lineWidth: 0.5)
+                }
             }
         }
     }
@@ -402,6 +467,8 @@ struct DualTreemapPanel: View {
     let destEntries: [FileEntry]
     let sourceTitle: String
     let destTitle: String
+    var sourceBaseURL: URL?
+    var destBaseURL: URL?
 
     @State private var isExpanded = true
 
@@ -411,28 +478,26 @@ struct DualTreemapPanel: View {
                 HStack(spacing: 8) {
                     TreemapView(
                         entries: sourceEntries,
-                        title: sourceTitle
+                        title: sourceTitle,
+                        baseURL: sourceBaseURL
                     )
                     .frame(minHeight: 200)
 
                     if !destEntries.isEmpty {
                         TreemapView(
                             entries: destEntries,
-                            title: destTitle
+                            title: destTitle,
+                            baseURL: destBaseURL
                         )
                         .frame(minHeight: 200)
                     }
                 }
-
                 TreemapLegend()
             }
         } label: {
-            Label(
-                "Directory View",
-                systemImage: "square.grid.3x3.fill"
-            )
-            .font(.subheadline)
-            .fontWeight(.medium)
+            Label("Directory View", systemImage: "square.grid.3x3.fill")
+                .font(.subheadline)
+                .fontWeight(.medium)
         }
         .padding()
         .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 10))

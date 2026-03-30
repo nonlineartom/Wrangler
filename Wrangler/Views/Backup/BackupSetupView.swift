@@ -55,7 +55,9 @@ struct BackupSetupView: View {
                         sourceEntries: session.sourceEntries,
                         destEntries: session.destEntries,
                         sourceTitle: session.sourceURL?.lastPathComponent ?? "Source",
-                        destTitle: session.destinationURL?.lastPathComponent ?? "Destination"
+                        destTitle: session.destinationURL?.lastPathComponent ?? "Destination",
+                        sourceBaseURL: session.sourceURL,
+                        destBaseURL: session.destinationURL
                     )
                     .padding(.horizontal, 20)
                     .transition(.move(edge: .bottom).combined(with: .opacity))

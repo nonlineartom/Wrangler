@@ -11,8 +11,15 @@ struct ContentView: View {
 
         var icon: String {
             switch self {
-            case .backup: "arrow.triangle.2.circlepath"
-            case .ingest: "arrow.right.doc.on.clipboard"
+            case .backup: "arrow.triangle.2.circlepath.circle.fill"
+            case .ingest: "arrow.right.doc.on.clipboard.fill"
+            }
+        }
+
+        var subtitle: String {
+            switch self {
+            case .backup: "Verify & sync directories"
+            case .ingest: "Copy between drives"
             }
         }
     }
@@ -20,30 +27,48 @@ struct ContentView: View {
     var body: some View {
         VStack(spacing: 0) {
             StorageMonitorBar()
-
             Divider()
 
             NavigationSplitView {
-                List(AppMode.allCases, id: \.self, selection: $selectedMode) { mode in
-                    Label(mode.rawValue, systemImage: mode.icon)
-                        .tag(mode)
-                }
-                .listStyle(.sidebar)
-                .navigationSplitViewColumnWidth(min: 160, ideal: 180, max: 200)
+                sidebarContent
+                    .navigationSplitViewColumnWidth(min: 175, ideal: 195, max: 220)
             } detail: {
                 Group {
                     switch selectedMode {
-                    case .backup:
-                        backupModeView
-                    case .ingest:
-                        ingestModeView
+                    case .backup: backupModeView
+                    case .ingest: IngestView(session: ingestSession)
                     }
                 }
-                .frame(minWidth: 900, minHeight: 600)
+                .frame(minWidth: 900, minHeight: 560)
             }
         }
         .frame(minWidth: 1100, minHeight: 764)
     }
+
+    // MARK: - Sidebar
+
+    private var sidebarContent: some View {
+        List(AppMode.allCases, id: \.self, selection: $selectedMode) { mode in
+            Label {
+                VStack(alignment: .leading, spacing: 1) {
+                    Text(mode.rawValue)
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                    Text(mode.subtitle)
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                }
+            } icon: {
+                Image(systemName: mode.icon)
+                    .font(.body)
+                    .foregroundStyle(.tint)
+            }
+        }
+        .listStyle(.sidebar)
+        .navigationTitle("Wrangler")
+    }
+
+    // MARK: - Backup flow
 
     @ViewBuilder
     private var backupModeView: some View {
@@ -61,9 +86,7 @@ struct ContentView: View {
                 NavigationStack {
                     BackupDashboardView(session: backupSession)
                         .navigationDestination(for: String.self) { value in
-                            if value == "report" {
-                                ReportView(report: report)
-                            }
+                            if value == "report" { ReportView(report: report) }
                         }
                 }
             }
@@ -73,9 +96,8 @@ struct ContentView: View {
     private var scanningView: some View {
         VStack(spacing: 20) {
             Spacer()
-            ProgressView()
-                .scaleEffect(1.5)
-            Text("Analyzing Differences...")
+            ProgressView().scaleEffect(1.5)
+            Text("Analyzing Differences…")
                 .font(.title2)
                 .fontWeight(.semibold)
             if let progress = backupSession.scanProgress {
@@ -101,10 +123,5 @@ struct ContentView: View {
         }
         .frame(maxWidth: .infinity)
         .background(.background)
-    }
-
-    @ViewBuilder
-    private var ingestModeView: some View {
-        IngestView(session: ingestSession)
     }
 }

@@ -54,6 +54,7 @@
 		EC8BBF5AFB92C85D2C18B4EB /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 322FD06028B3A9830AB9E3C5 /* IOKit.framework */; };
 		F002C14108794F3CE23DB38E /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35732010F1C5380BB7BBF33 /* AppState.swift */; };
 		F48E0BD15979A9472EA440BE /* DateFormatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = A019E7EE678D0F1662582B4D /* DateFormatting.swift */; };
+		FBEF5BE1664C228B37F34CA6 /* QuickLookHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B074D175C69E9A5646BEF6 /* QuickLookHelper.swift */; };
 		FC76E303CA35E95A8CBEE58C /* StorageMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9C49C77C34EA18544D1DCA7 /* StorageMonitor.swift */; };
 		FCF65E5B4529644C06EC6713 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F6967799546D3792797BBE19 /* Assets.xcassets */; };
 		FE5639C6368E8C0469C0EB87 /* DriveConnectionDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2994C06642C7ED978C25B943 /* DriveConnectionDetector.swift */; };
@@ -74,6 +75,7 @@
 		021341A69C1E8B7CCCFA97AE /* SyncReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncReport.swift; sourceTree = "<group>"; };
 		0479D5314D34974D9D9D7E5A /* CopyEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyEngine.swift; sourceTree = "<group>"; };
 		04BCBBF41D92E7EF310BDA0A /* DiffFilterSidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffFilterSidebar.swift; sourceTree = "<group>"; };
+		09B074D175C69E9A5646BEF6 /* QuickLookHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookHelper.swift; sourceTree = "<group>"; };
 		0F5DC2C1E3F7808FF5E8284C /* BlockProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockProgressView.swift; sourceTree = "<group>"; };
 		123FB9CF5EF4DA4E90174044 /* DiskArbitration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DiskArbitration.framework; path = System/Library/Frameworks/DiskArbitration.framework; sourceTree = SDKROOT; };
 		1644078674C0A39ED686A46C /* BackupDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupDashboardView.swift; sourceTree = "<group>"; };
@@ -167,6 +169,7 @@
 				F21F341179391DC72B466A29 /* ByteCountFormatting.swift */,
 				A019E7EE678D0F1662582B4D /* DateFormatting.swift */,
 				3407A568A288DBF1C0840203 /* FileManagerExtensions.swift */,
+				09B074D175C69E9A5646BEF6 /* QuickLookHelper.swift */,
 				E1E1D19DC2282BEAE2701DEF /* ReportGenerator.swift */,
 			);
 			path = Utilities;
@@ -440,6 +443,7 @@
 				DD28184354FC274AC7BB96D4 /* IngestSession.swift in Sources */,
 				D6E0819C8B3B6BB9A1F74435 /* IngestView.swift in Sources */,
 				542790BB409303B0F489093F /* MediaThumbnailGrid.swift in Sources */,
+				FBEF5BE1664C228B37F34CA6 /* QuickLookHelper.swift in Sources */,
 				08AC39C3F80A997395169E4B /* ReportGenerator.swift in Sources */,
 				BA3F286C049D5C510E091320 /* ReportView.swift in Sources */,
 				FC76E303CA35E95A8CBEE58C /* StorageMonitor.swift in Sources */,

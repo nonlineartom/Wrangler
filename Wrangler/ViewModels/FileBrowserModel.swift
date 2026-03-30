@@ -57,6 +57,32 @@ final class FileBrowserModel {
         }
     }
 
+    /// Prompts the user for a name and creates a new sub-folder inside currentURL.
+    /// Returns the new folder URL on success, nil otherwise.
+    @discardableResult
+    func createNewFolder(suggestedName: String = "New Folder") -> URL? {
+        guard let base = currentURL else { return nil }
+
+        // Use NSSavePanel configured as "new folder" dialog
+        let panel = NSSavePanel()
+        panel.title = "New Folder"
+        panel.message = "Enter a name for the new folder:"
+        panel.nameFieldStringValue = suggestedName
+        panel.canCreateDirectories = true
+        panel.directoryURL = base
+        panel.prompt = "Create"
+
+        guard panel.runModal() == .OK, let url = panel.url else { return nil }
+
+        do {
+            try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
+            loadEntries()   // refresh
+            return url
+        } catch {
+            return nil
+        }
+    }
+
     private func loadEntries() {
         guard let url = currentURL else { return }
 

@@ -4,37 +4,21 @@ struct IngestView: View {
     @Bindable var session: IngestSession
 
     var body: some View {
-        VStack(spacing: 0) {
-            switch session.phase {
-            case .browsing:
-                dualPaneBrowser
-            case .copying:
-                IngestProgressView(session: session)
-            case .complete:
-                ingestCompleteView
-            }
-        }
-        .toolbar {
-            ToolbarItemGroup(placement: .primaryAction) {
-                if session.phase == .browsing {
-                    Button {
-                        Task { await session.copySelectedFiles() }
-                    } label: {
-                        Label("Copy", systemImage: "arrow.right.circle.fill")
-                    }
-                    .disabled(!session.canCopy)
-                    .buttonStyle(.borderedProminent)
-
-                    Text("\(session.selectedFiles.count) selected")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-            }
+        switch session.phase {
+        case .browsing:
+            dualPaneBrowser
+        case .copying:
+            IngestProgressView(session: session)
+        case .complete:
+            ingestCompleteView
         }
     }
 
+    // MARK: - Dual-pane browser
+
     private var dualPaneBrowser: some View {
-        HSplitView {
+        HStack(spacing: 0) {
+            // Source pane
             FileBrowserPane(
                 model: session.sourceModel,
                 label: "Source",
@@ -42,13 +26,20 @@ struct IngestView: View {
                 allowSelection: true,
                 thumbnails: session.thumbnails,
                 onNavigate: { url in
-                    Task {
-                        await session.loadThumbnails(for: session.sourceModel.entries, baseURL: url)
-                    }
+                    Task { await session.loadThumbnails(for: session.sourceModel.entries, baseURL: url) }
                 }
             )
-            .frame(minWidth: 400)
+            .frame(maxWidth: .infinity)
 
+            Divider()
+
+            // Centre action column
+            centerActionPanel
+                .frame(width: 72)
+
+            Divider()
+
+            // Destination pane
             FileBrowserPane(
                 model: session.destModel,
                 label: "Destination",
@@ -57,43 +48,168 @@ struct IngestView: View {
                 thumbnails: [:],
                 onNavigate: nil
             )
-            .frame(minWidth: 400)
+            .frame(maxWidth: .infinity)
+        }
+        // Keyboard shortcut: ⌘A selects all, Escape clears
+        .focusable()
+        .onKeyPress(.escape) {
+            session.selectedFiles.removeAll()
+            return .handled
         }
     }
 
-    private var ingestCompleteView: some View {
-        VStack(spacing: 24) {
+    // MARK: - Centre action panel
+
+    private var centerActionPanel: some View {
+        VStack(spacing: 12) {
             Spacer()
 
-            Image(systemName: session.errors.isEmpty ? "checkmark.seal.fill" : "exclamationmark.triangle.fill")
-                .font(.system(size: 64))
-                .foregroundStyle(session.errors.isEmpty ? .green : .orange)
+            if session.selectedFiles.isEmpty {
+                VStack(spacing: 6) {
+                    Image(systemName: "arrow.right.circle")
+                        .font(.system(size: 32))
+                        .foregroundStyle(.quaternary)
+                    Text("Select files\nto copy")
+                        .font(.caption2)
+                        .foregroundStyle(.quaternary)
+                        .multilineTextAlignment(.center)
+                }
+            } else {
+                VStack(spacing: 8) {
+                    // File count badge
+                    VStack(spacing: 2) {
+                        Text("\(session.selectedFiles.count)")
+                            .font(.title2.bold())
+                            .monospacedDigit()
+                            .foregroundStyle(.primary)
+                        Text(session.selectedFiles.count == 1 ? "file" : "files")
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                    }
 
-            Text(session.errors.isEmpty ? "Copy Complete" : "Copy Completed with Errors")
-                .font(.title)
+                    // Copy button — the primary action
+                    Button {
+                        Task { await session.copySelectedFiles() }
+                    } label: {
+                        Image(systemName: "arrow.right.circle.fill")
+                            .font(.system(size: 36))
+                            .foregroundStyle(session.canCopy ? Color.accentColor : Color.secondary.opacity(0.4))
+                            .symbolEffect(.pulse, isActive: session.canCopy)
+                    }
+                    .buttonStyle(.plain)
+                    .disabled(!session.canCopy)
+                    .help("Copy selected files to destination")
+
+                    // Total size
+                    if let size = selectedTotalSize {
+                        Text(size)
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                            .monospacedDigit()
+                    }
+                }
+            }
+
+            Spacer()
+
+            // Clear selection button (shown when something is selected)
+            if !session.selectedFiles.isEmpty {
+                Button {
+                    session.selectedFiles.removeAll()
+                } label: {
+                    Image(systemName: "xmark.circle")
+                        .font(.caption)
+                        .foregroundStyle(.tertiary)
+                }
+                .buttonStyle(.plain)
+                .help("Clear selection (Esc)")
+                .padding(.bottom, 12)
+            }
+        }
+        .background(.regularMaterial)
+    }
+
+    private var selectedTotalSize: String? {
+        let entries = session.sourceModel.entries.filter {
+            session.selectedFiles.contains($0.relativePath)
+        }
+        let total = entries.reduce(Int64(0)) { $0 + $1.fileSize }
+        guard total > 0 else { return nil }
+        return ByteCountFormatting.string(fromByteCount: total)
+    }
+
+    // MARK: - Complete screen
+
+    private var ingestCompleteView: some View {
+        VStack(spacing: 0) {
+            Spacer()
+
+            // Status icon
+            ZStack {
+                Circle()
+                    .fill(session.errors.isEmpty ? Color.green.opacity(0.12) : Color.orange.opacity(0.12))
+                    .frame(width: 100, height: 100)
+
+                Image(systemName: session.errors.isEmpty
+                      ? "checkmark.circle.fill"
+                      : "exclamationmark.triangle.fill")
+                    .font(.system(size: 52))
+                    .foregroundStyle(session.errors.isEmpty ? .green : .orange)
+            }
+            .padding(.bottom, 20)
+
+            Text(session.errors.isEmpty ? "Transfer Complete" : "Transfer Completed with Errors")
+                .font(.title2)
                 .fontWeight(.semibold)
 
-            VStack(spacing: 8) {
-                Text("\(session.completedFiles.count) files copied")
-                    .font(.title3)
+            Text(session.errors.isEmpty
+                 ? "\(session.completedFiles.count) file\(session.completedFiles.count == 1 ? "" : "s") copied and verified"
+                 : "\(session.completedFiles.count) files copied · \(session.errors.count) errors")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .padding(.top, 4)
 
-                if session.completedFiles.allSatisfy(\.verified) {
-                    Label("All checksums verified", systemImage: "checkmark.shield.fill")
-                        .foregroundStyle(.green)
-                }
-
-                if !session.errors.isEmpty {
-                    Text("\(session.errors.count) errors")
-                        .foregroundStyle(.red)
-                }
+            // Verification status
+            if session.completedFiles.allSatisfy(\.verified) {
+                Label("All checksums verified", systemImage: "checkmark.shield.fill")
+                    .font(.caption)
+                    .foregroundStyle(.green)
+                    .padding(.top, 12)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 6)
+                    .background(.green.opacity(0.1), in: Capsule())
+                    .padding(.top, 8)
             }
 
-            Button("New Transfer") {
-                session.reset()
+            // Error list
+            if !session.errors.isEmpty {
+                GroupBox {
+                    VStack(alignment: .leading, spacing: 4) {
+                        ForEach(session.errors.prefix(5)) { err in
+                            Label(err.relativePath, systemImage: "xmark.circle.fill")
+                                .font(.caption)
+                                .foregroundStyle(.red)
+                        }
+                        if session.errors.count > 5 {
+                            Text("+ \(session.errors.count - 5) more errors")
+                                .font(.caption2)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                } label: {
+                    Label("Errors", systemImage: "exclamationmark.triangle")
+                        .foregroundStyle(.orange)
+                }
+                .frame(maxWidth: 400)
+                .padding(.top, 16)
             }
-            .buttonStyle(.borderedProminent)
 
             Spacer()
+
+            Button("New Transfer") { session.reset() }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.large)
+                .padding(.bottom, 40)
         }
         .frame(maxWidth: .infinity)
         .background(.background)

@@ -7,69 +7,80 @@ struct DiffFilterSidebar: View {
     var body: some View {
         List(selection: $selectedFilter) {
             Section("Filter") {
-                filterRow(label: "All Files", icon: "doc.on.doc", count: summary.totalFiles, filter: nil)
+                // "All" uses nil — stored as Optional<DiffStatus>.none
+                filterRow(
+                    nil,
+                    label: "All Files",
+                    icon: "doc.on.doc",
+                    count: summary.totalFiles,
+                    color: .primary
+                )
 
-                Divider()
+                Divider().listRowSeparator(.hidden)
 
-                filterRow(label: "Identical", icon: DiffStatus.identical.iconName, count: summary.identicalCount, filter: .identical, color: .green)
+                filterRow(.identical, label: "Identical",
+                          icon: DiffStatus.identical.iconName,
+                          count: summary.identicalCount, color: .green)
 
-                filterRow(label: "New", icon: DiffStatus.newOnSource.iconName, count: summary.newOnSourceCount, filter: .newOnSource, color: .blue)
+                filterRow(.newOnSource, label: "New on Source",
+                          icon: DiffStatus.newOnSource.iconName,
+                          count: summary.newOnSourceCount, color: .blue)
 
-                filterRow(label: "Modified", icon: DiffStatus.modified.iconName, count: summary.modifiedCount, filter: .modified, color: .orange)
+                filterRow(.modified, label: "Modified",
+                          icon: DiffStatus.modified.iconName,
+                          count: summary.modifiedCount, color: .orange)
 
-                filterRow(label: "Orphaned", icon: DiffStatus.orphaned.iconName, count: summary.orphanedCount, filter: .orphaned, color: .red)
+                filterRow(.orphaned, label: "Orphaned",
+                          icon: DiffStatus.orphaned.iconName,
+                          count: summary.orphanedCount, color: .red)
             }
 
-            Section("Summary") {
-                VStack(alignment: .leading, spacing: 6) {
-                    summaryRow("Source", ByteCountFormatting.string(fromByteCount: summary.totalSourceSize))
-                    summaryRow("Destination", ByteCountFormatting.string(fromByteCount: summary.totalDestinationSize))
-                    Divider()
-                    summaryRow("To Transfer", ByteCountFormatting.string(fromByteCount: summary.bytesToTransfer))
-                }
-                .padding(.vertical, 4)
+            Section("Sizes") {
+                sizeRow("Source", summary.totalSourceSize)
+                sizeRow("Destination", summary.totalDestinationSize)
+                Divider().listRowSeparator(.hidden)
+                sizeRow("To Transfer", summary.bytesToTransfer, bold: true)
             }
         }
         .listStyle(.sidebar)
+        .navigationTitle("Wrangler")
     }
 
-    private func filterRow(label: String, icon: String, count: Int, filter: DiffStatus?, color: Color = .primary) -> some View {
-        Button {
-            selectedFilter = filter
-        } label: {
-            HStack {
-                Label(label, systemImage: icon)
-                    .foregroundStyle(filter == selectedFilter ? .primary : color)
+    // MARK: - Rows
 
-                Spacer()
+    private func filterRow(
+        _ filter: DiffStatus?,
+        label: String,
+        icon: String,
+        count: Int,
+        color: Color
+    ) -> some View {
+        HStack(spacing: 0) {
+            Label(label, systemImage: icon)
+                .foregroundStyle(color)
+                .frame(maxWidth: .infinity, alignment: .leading)
 
-                Text("\(count)")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .monospacedDigit()
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 2)
-                    .background(.quaternary, in: Capsule())
-            }
+            Text("\(count)")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .monospacedDigit()
+                .padding(.horizontal, 7)
+                .padding(.vertical, 2)
+                .background(.quaternary, in: Capsule())
         }
-        .buttonStyle(.plain)
-        .padding(.vertical, 2)
-        .background(
-            filter == selectedFilter ?
-                RoundedRectangle(cornerRadius: 6).fill(Color.accentColor.opacity(0.1)) :
-                RoundedRectangle(cornerRadius: 6).fill(.clear)
-        )
+        .tag(filter)          // List uses this for selection
     }
 
-    private func summaryRow(_ label: String, _ value: String) -> some View {
+    private func sizeRow(_ label: String, _ bytes: Int64, bold: Bool = false) -> some View {
         HStack {
             Text(label)
                 .font(.caption)
                 .foregroundStyle(.secondary)
             Spacer()
-            Text(value)
-                .font(.caption)
+            Text(ByteCountFormatting.string(fromByteCount: bytes))
+                .font(bold ? .caption.weight(.semibold) : .caption)
                 .monospacedDigit()
         }
+        .listRowSeparator(.hidden)
     }
 }

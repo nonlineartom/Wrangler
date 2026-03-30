@@ -12,25 +12,33 @@ struct FileBrowserPane: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // Header with volume info
             paneHeader
                 .padding(.horizontal, 12)
-                .padding(.vertical, 8)
+                .padding(.top, 8)
+                .padding(.bottom, 6)
                 .background(.ultraThinMaterial)
 
-            Divider()
-
-            // Breadcrumb bar
+            // Breadcrumbs
             if !model.breadcrumbs.isEmpty {
                 breadcrumbBar
                     .padding(.horizontal, 12)
-                    .padding(.vertical, 6)
-                    .background(.background.opacity(0.5))
-
+                    .padding(.vertical, 5)
+                    .background(Color(.windowBackgroundColor).opacity(0.6))
+                Divider()
+            } else {
                 Divider()
             }
 
-            // File list
+            // Sort bar — lives just above the list so it doesn't crowd the header
+            if model.currentURL != nil {
+                sortBar
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 4)
+                    .background(Color(.windowBackgroundColor).opacity(0.3))
+                Divider()
+            }
+
+            // Content
             if model.currentURL != nil {
                 fileList
             } else {
@@ -43,38 +51,70 @@ struct FileBrowserPane: View {
         }
     }
 
+    // MARK: - Header
+
     private var paneHeader: some View {
-        HStack {
-            Label(label, systemImage: label == "Source" ? "externaldrive.fill" : "folder.fill")
+        HStack(spacing: 8) {
+            Image(systemName: label == "Source" ? "externaldrive.fill" : "folder.fill")
+                .font(.subheadline)
+                .foregroundStyle(.tint)
+
+            Text(label)
                 .font(.subheadline)
                 .fontWeight(.semibold)
-
-            Spacer()
 
             if let conn = connectionInfo {
                 ConnectionBadge(info: conn)
             }
 
-            if let vi = model.volumeInfo {
-                CapacityBarView(usage: vi.usagePercent)
-                    .frame(width: 50, height: 5)
+            Spacer()
 
-                Text("\(ByteCountFormatting.string(fromByteCount: vi.availableCapacity)) free")
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
+            if let vi = model.volumeInfo {
+                HStack(spacing: 5) {
+                    CapacityBarView(usage: vi.usagePercent)
+                        .frame(width: 40, height: 4)
+                    Text("\(ByteCountFormatting.string(fromByteCount: vi.availableCapacity)) free")
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                }
+            }
+
+            // New folder — only visible when browsing a directory
+            if model.currentURL != nil {
+                Button {
+                    model.createNewFolder()
+                } label: {
+                    Image(systemName: "folder.badge.plus")
+                        .font(.caption)
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+                .help("New folder inside current directory")
             }
 
             Button {
                 model.selectDirectory()
-                if let url = model.currentURL {
-                    onNavigate?(url)
-                }
+                if let url = model.currentURL { onNavigate?(url) }
             } label: {
-                Image(systemName: "folder.badge.plus")
+                Image(systemName: "folder")
                     .font(.caption)
             }
             .buttonStyle(.bordered)
             .controlSize(.small)
+            .help("Open folder")
+        }
+    }
+
+    // MARK: - Sort bar
+
+    private var sortBar: some View {
+        HStack {
+            Text("\(model.entries.count) items")
+                .font(.caption2)
+                .foregroundStyle(.tertiary)
+                .monospacedDigit()
+
+            Spacer()
 
             Picker("Sort", selection: Binding(
                 get: { model.sortOrder },
@@ -86,20 +126,22 @@ struct FileBrowserPane: View {
             }
             .pickerStyle(.segmented)
             .labelsHidden()
-            .frame(width: 150)
+            .controlSize(.small)
+            .frame(width: 140)
         }
     }
 
+    // MARK: - Breadcrumbs
+
     private var breadcrumbBar: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 4) {
+            HStack(spacing: 2) {
                 ForEach(Array(model.breadcrumbs.enumerated()), id: \.element.id) { index, item in
                     if index > 0 {
                         Image(systemName: "chevron.right")
-                            .font(.caption2)
-                            .foregroundStyle(.tertiary)
+                            .font(.system(size: 9, weight: .medium))
+                            .foregroundStyle(.quaternary)
                     }
-
                     Button(item.name) {
                         model.navigate(to: item.url)
                         onNavigate?(item.url)
@@ -114,55 +156,44 @@ struct FileBrowserPane: View {
         }
     }
 
+    // MARK: - File list
+    // Uses List's built-in selection — removes the old manual onTapGesture(count:1)
+    // conflict. Double-tap still navigates into directories.
+
     private var fileList: some View {
         List(model.entries, selection: allowSelection ? $selectedFiles : .constant([])) { entry in
             FileRowView(
                 entry: entry,
-                thumbnail: thumbnails[entry.relativePath]
+                thumbnail: thumbnails[entry.relativePath],
+                baseURL: model.currentURL
             )
             .contentShape(Rectangle())
-            .onTapGesture(count: 2) {
-                if entry.isDirectory, let url = model.currentURL {
+            .simultaneousGesture(
+                TapGesture(count: 2).onEnded {
+                    guard entry.isDirectory, let url = model.currentURL else { return }
                     let newURL = url.appendingPathComponent(entry.fileName)
                     model.navigate(to: newURL)
                     onNavigate?(newURL)
                 }
-            }
-            .onTapGesture(count: 1) {
-                if allowSelection && !entry.isDirectory {
-                    if selectedFiles.contains(entry.relativePath) {
-                        selectedFiles.remove(entry.relativePath)
-                    } else {
-                        selectedFiles.insert(entry.relativePath)
-                    }
-                }
-            }
+            )
             .tag(entry.relativePath)
         }
         .listStyle(.inset(alternatesRowBackgrounds: true))
     }
 
+    // MARK: - Empty state
+
     private var emptyState: some View {
-        VStack(spacing: 12) {
-            Spacer()
-            Image(systemName: "folder.badge.questionmark")
-                .font(.system(size: 48))
-                .foregroundStyle(.tertiary)
-
-            Text("No directory selected")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-
-            Button("Browse...") {
+        ContentUnavailableView {
+            Label("No Folder Selected", systemImage: "folder.badge.questionmark")
+        } description: {
+            Text("Choose a folder to browse its contents")
+        } actions: {
+            Button("Browse…") {
                 model.selectDirectory()
-                if let url = model.currentURL {
-                    onNavigate?(url)
-                }
+                if let url = model.currentURL { onNavigate?(url) }
             }
             .buttonStyle(.bordered)
-
-            Spacer()
         }
-        .frame(maxWidth: .infinity)
     }
 }

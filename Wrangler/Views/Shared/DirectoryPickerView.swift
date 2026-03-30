@@ -74,7 +74,7 @@ struct DirectoryPickerView: View {
                 } else {
                     HStack {
                         Spacer()
-                        VStack(spacing: 6) {
+                        VStack(spacing: 8) {
                             Image(systemName: "folder.badge.plus")
                                 .font(.title)
                                 .foregroundStyle(.tertiary)
