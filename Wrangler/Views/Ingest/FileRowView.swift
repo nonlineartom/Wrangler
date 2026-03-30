@@ -3,6 +3,7 @@ import AppKit
 
 struct FileRowView: View {
     let entry: FileEntry
+    var isSelected: Bool = false
     let thumbnail: NSImage?
     var baseURL: URL?          // needed for "Reveal in Finder"
 
@@ -79,7 +80,15 @@ struct FileRowView: View {
         .padding(.horizontal, 4)
         .background(
             RoundedRectangle(cornerRadius: 5)
-                .fill(isHovered ? Color.primary.opacity(0.05) : .clear)
+                .fill(
+                    isSelected
+                        ? Color.accentColor.opacity(0.18)
+                        : (isHovered ? Color.primary.opacity(0.05) : .clear)
+                )
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 5)
+                .strokeBorder(isSelected ? Color.accentColor.opacity(0.35) : .clear, lineWidth: 1)
         )
         .contentShape(Rectangle())
         .onHover { isHovered = $0 }

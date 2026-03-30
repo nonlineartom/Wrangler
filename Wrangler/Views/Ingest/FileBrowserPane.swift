@@ -157,23 +157,34 @@ struct FileBrowserPane: View {
     }
 
     // MARK: - File list
-    // Uses List's built-in selection — removes the old manual onTapGesture(count:1)
-    // conflict. Double-tap still navigates into directories.
+    // Manual tap-based selection — List(selection:) requires prior keyboard focus on
+    // macOS and misses the first click. We manage selectedFiles ourselves so the very
+    // first click on any row registers immediately.
 
     private var fileList: some View {
-        List(model.entries, selection: allowSelection ? $selectedFiles : .constant([])) { entry in
+        List(model.entries) { entry in
             FileRowView(
                 entry: entry,
+                isSelected: selectedFiles.contains(entry.relativePath),
                 thumbnail: thumbnails[entry.relativePath],
                 baseURL: model.currentURL
             )
+            // Double-tap: navigate into directory
             .onTapGesture(count: 2) {
                 guard entry.isDirectory, let url = model.currentURL else { return }
                 let newURL = url.appendingPathComponent(entry.fileName)
                 model.navigate(to: newURL)
                 onNavigate?(newURL)
             }
-            .tag(entry.relativePath)
+            // Single-tap: toggle selection (files and folders)
+            .onTapGesture(count: 1) {
+                guard allowSelection else { return }
+                if selectedFiles.contains(entry.relativePath) {
+                    selectedFiles.remove(entry.relativePath)
+                } else {
+                    selectedFiles.insert(entry.relativePath)
+                }
+            }
         }
         .listStyle(.inset(alternatesRowBackgrounds: true))
     }

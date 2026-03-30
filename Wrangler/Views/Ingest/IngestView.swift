@@ -50,10 +50,19 @@ struct IngestView: View {
             )
             .frame(maxWidth: .infinity)
         }
-        // Keyboard shortcut: ⌘A selects all, Escape clears
+        // Keyboard: Escape clears selection
         .focusable()
         .onKeyPress(.escape) {
             session.selectedFiles.removeAll()
+            return .handled
+        }
+        // ⌘A selects all non-directory entries in source
+        .onKeyPress("a", phases: .down) { press in
+            guard press.modifiers.contains(.command) else { return .ignored }
+            let allPaths = session.sourceModel.entries
+                .filter { !$0.isDirectory }
+                .map(\.relativePath)
+            session.selectedFiles = Set(allPaths)
             return .handled
         }
     }
