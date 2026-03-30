@@ -1,0 +1,668 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0052677085833B43CEABD0E5 /* DiffResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9750EFB442CE9DBB7AD87A /* DiffResult.swift */; };
+		0667D53C6C80C8ED99BD01DB /* FileRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF774AC58AEF06FDE7513250 /* FileRowView.swift */; };
+		08AC39C3F80A997395169E4B /* ReportGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1E1D19DC2282BEAE2701DEF /* ReportGenerator.swift */; };
+		184C426BB929D4B55DFD29E1 /* FileBrowserPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DEA78770AF2590E0B8D4F5A /* FileBrowserPane.swift */; };
+		1B89A2B0244DC74C868D0FEB /* BackupSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C6FEE2AEBBBDD77256F743C /* BackupSession.swift */; };
+		2E9FAFA947263D556CBF4CA3 /* FileManagerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3407A568A288DBF1C0840203 /* FileManagerExtensions.swift */; };
+		35EFA34C0B09AC2FCDC637BC /* BackupSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F7967072A646891806038F /* BackupSetupView.swift */; };
+		3AFE4C5AB291DAE421D9D7B8 /* BlockProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F5DC2C1E3F7808FF5E8284C /* BlockProgressView.swift */; };
+		448EE9E31ACBD7D2CB198701 /* ThroughputGaugeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6EAAC486DD8E33C2396961 /* ThroughputGaugeView.swift */; };
+		45202E4ABD87B3B1A719E90B /* DiffTreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7B736ABE9E221F1795C7A9 /* DiffTreeView.swift */; };
+		4D023BAA52DE75BF15DFD19D /* IngestProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3201706B0B14961E42A92FE /* IngestProgressView.swift */; };
+		4E3F7B7CAA0B0D4BBFFF125C /* VolumeInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8301B82242E38EA9FAD9B8 /* VolumeInfoView.swift */; };
+		542790BB409303B0F489093F /* MediaThumbnailGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC38AE60D2CB4F7EB4C14CEC /* MediaThumbnailGrid.swift */; };
+		5E5C591F2AD2845EBC8D3C5C /* DiffRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB0F4701C9F1DB8C91C7002 /* DiffRowView.swift */; };
+		5FCF4869E97A2BCE8CD7A123 /* DiffEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909CC2F597D474547480C5C8 /* DiffEngine.swift */; };
+		672D96A113C9363F689CAECD /* VolumeDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E632D979C752888FD1A0465 /* VolumeDetector.swift */; };
+		6D2B2695A03AC9A55753C1F4 /* DiffView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 693BF526529149C36BC736E0 /* DiffView.swift */; };
+		71EA3731001AF53CCD20FA58 /* FileInspectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575F7A472ABE8F859FFC6642 /* FileInspectorView.swift */; };
+		732DDE4F895A9EEC4F3D1E8E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D349FB9000268DACADDE1593 /* ContentView.swift */; };
+		839251B3C559E9DCB639BFB0 /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCC6FB133A548C6EB87E476D /* AppError.swift */; };
+		84E75564BD0AEBBAA5D95E43 /* ChecksumEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975D5D9F286B04A3AEA732EB /* ChecksumEngine.swift */; };
+		86BC2CDC9432E84EED8E8158 /* DiffEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4CDC7B61E4625FCE47DFB5 /* DiffEntry.swift */; };
+		8D94FF001AE109B9B1CDB2C9 /* CopyEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D97DE9551CE934CF34A50CD0 /* CopyEngineTests.swift */; };
+		8DDE956EAC352295B339C83D /* DirectoryPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19FFA48B8372991ADB7E2202 /* DirectoryPickerView.swift */; };
+		9756A1A5AE099977FDCE8311 /* CopyProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B215ED6F8239010B3838EEC /* CopyProgress.swift */; };
+		9978CA831A2252D82BA64BBD /* SyncReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021341A69C1E8B7CCCFA97AE /* SyncReport.swift */; };
+		9E28188CD3F0E39F62A9834A /* ChecksumEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F448140125801DDF2E092B /* ChecksumEngineTests.swift */; };
+		AEE2C38C42BF12A22667A785 /* FileEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 419B1451C41B6AAAFC6000E0 /* FileEntry.swift */; };
+		B5BB9A42784038A5B34DDBEF /* ByteCountFormatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21F341179391DC72B466A29 /* ByteCountFormatting.swift */; };
+		B9D640711CCCAB559FAF32AE /* DiffFilterSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BCBBF41D92E7EF310BDA0A /* DiffFilterSidebar.swift */; };
+		BA3F286C049D5C510E091320 /* ReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BE8495AE52A84F6A0D866A /* ReportView.swift */; };
+		BDDCA37464961A2C8B327145 /* BackupDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1644078674C0A39ED686A46C /* BackupDashboardView.swift */; };
+		C0E8E390ECFAB3B72D6DA681 /* ThumbnailEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85219AC927D25370B4E27DF5 /* ThumbnailEngine.swift */; };
+		C52D987FD7EFD57BB4B828B6 /* WranglerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0E35626F080713F12BEFAFA /* WranglerApp.swift */; };
+		C70352B50C276F5AE87D7116 /* ReportGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9A7B338A60B923C53F35D0 /* ReportGeneratorTests.swift */; };
+		CA6B2E005C0C44970E17095B /* BackupProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169CFDC26586C9A0988536FF /* BackupProgressView.swift */; };
+		D6E0819C8B3B6BB9A1F74435 /* IngestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7599B18E4E9AB9DF80AF458 /* IngestView.swift */; };
+		D99D8EFC862FE022C52C4F41 /* CopyEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0479D5314D34974D9D9D7E5A /* CopyEngine.swift */; };
+		DD28184354FC274AC7BB96D4 /* IngestSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C3EAAF8ADDB7D6E5C8DED0 /* IngestSession.swift */; };
+		EA4097C6FB4162512B43AC45 /* FileBrowserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A22070D2938305C63434366 /* FileBrowserModel.swift */; };
+		F002C14108794F3CE23DB38E /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35732010F1C5380BB7BBF33 /* AppState.swift */; };
+		F48E0BD15979A9472EA440BE /* DateFormatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = A019E7EE678D0F1662582B4D /* DateFormatting.swift */; };
+		FCF65E5B4529644C06EC6713 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F6967799546D3792797BBE19 /* Assets.xcassets */; };
+		FE75348CF41A8E65CA481CF0 /* DiffEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292E904DFEDB1163686F06FA /* DiffEngineTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		3A2173904B98C3443BC01A24 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 80A2E4C48F7691C37C8326A9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4D3247196F9B53E93B14B9D9;
+			remoteInfo = Wrangler;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		021341A69C1E8B7CCCFA97AE /* SyncReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncReport.swift; sourceTree = "<group>"; };
+		0479D5314D34974D9D9D7E5A /* CopyEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyEngine.swift; sourceTree = "<group>"; };
+		04BCBBF41D92E7EF310BDA0A /* DiffFilterSidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffFilterSidebar.swift; sourceTree = "<group>"; };
+		0F5DC2C1E3F7808FF5E8284C /* BlockProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockProgressView.swift; sourceTree = "<group>"; };
+		1644078674C0A39ED686A46C /* BackupDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupDashboardView.swift; sourceTree = "<group>"; };
+		169CFDC26586C9A0988536FF /* BackupProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupProgressView.swift; sourceTree = "<group>"; };
+		19FFA48B8372991ADB7E2202 /* DirectoryPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryPickerView.swift; sourceTree = "<group>"; };
+		1A7B736ABE9E221F1795C7A9 /* DiffTreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffTreeView.swift; sourceTree = "<group>"; };
+		1C6FEE2AEBBBDD77256F743C /* BackupSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupSession.swift; sourceTree = "<group>"; };
+		292E904DFEDB1163686F06FA /* DiffEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffEngineTests.swift; sourceTree = "<group>"; };
+		31F7967072A646891806038F /* BackupSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupSetupView.swift; sourceTree = "<group>"; };
+		3407A568A288DBF1C0840203 /* FileManagerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerExtensions.swift; sourceTree = "<group>"; };
+		3A22070D2938305C63434366 /* FileBrowserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileBrowserModel.swift; sourceTree = "<group>"; };
+		3B9750EFB442CE9DBB7AD87A /* DiffResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffResult.swift; sourceTree = "<group>"; };
+		3BB0F4701C9F1DB8C91C7002 /* DiffRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffRowView.swift; sourceTree = "<group>"; };
+		419B1451C41B6AAAFC6000E0 /* FileEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileEntry.swift; sourceTree = "<group>"; };
+		4B8301B82242E38EA9FAD9B8 /* VolumeInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeInfoView.swift; sourceTree = "<group>"; };
+		575F7A472ABE8F859FFC6642 /* FileInspectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileInspectorView.swift; sourceTree = "<group>"; };
+		5B215ED6F8239010B3838EEC /* CopyProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyProgress.swift; sourceTree = "<group>"; };
+		5E632D979C752888FD1A0465 /* VolumeDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeDetector.swift; sourceTree = "<group>"; };
+		693BF526529149C36BC736E0 /* DiffView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffView.swift; sourceTree = "<group>"; };
+		6DEA78770AF2590E0B8D4F5A /* FileBrowserPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileBrowserPane.swift; sourceTree = "<group>"; };
+		7F6EAAC486DD8E33C2396961 /* ThroughputGaugeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThroughputGaugeView.swift; sourceTree = "<group>"; };
+		85219AC927D25370B4E27DF5 /* ThumbnailEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailEngine.swift; sourceTree = "<group>"; };
+		88BE8495AE52A84F6A0D866A /* ReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportView.swift; sourceTree = "<group>"; };
+		909CC2F597D474547480C5C8 /* DiffEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffEngine.swift; sourceTree = "<group>"; };
+		975D5D9F286B04A3AEA732EB /* ChecksumEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecksumEngine.swift; sourceTree = "<group>"; };
+		9C9A7B338A60B923C53F35D0 /* ReportGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportGeneratorTests.swift; sourceTree = "<group>"; };
+		9F47B4F375C71810C5DFDE32 /* Wrangler.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Wrangler.entitlements; sourceTree = "<group>"; };
+		A019E7EE678D0F1662582B4D /* DateFormatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatting.swift; sourceTree = "<group>"; };
+		AF9021864D1D6E3F81F7CDCE /* Wrangler.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wrangler.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B35732010F1C5380BB7BBF33 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		C33AF0088BAEE304705E156A /* WranglerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WranglerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC38AE60D2CB4F7EB4C14CEC /* MediaThumbnailGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaThumbnailGrid.swift; sourceTree = "<group>"; };
+		CF774AC58AEF06FDE7513250 /* FileRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileRowView.swift; sourceTree = "<group>"; };
+		D2C3EAAF8ADDB7D6E5C8DED0 /* IngestSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngestSession.swift; sourceTree = "<group>"; };
+		D349FB9000268DACADDE1593 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		D97DE9551CE934CF34A50CD0 /* CopyEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyEngineTests.swift; sourceTree = "<group>"; };
+		D9F448140125801DDF2E092B /* ChecksumEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecksumEngineTests.swift; sourceTree = "<group>"; };
+		E0E35626F080713F12BEFAFA /* WranglerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WranglerApp.swift; sourceTree = "<group>"; };
+		E1E1D19DC2282BEAE2701DEF /* ReportGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportGenerator.swift; sourceTree = "<group>"; };
+		E3201706B0B14961E42A92FE /* IngestProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngestProgressView.swift; sourceTree = "<group>"; };
+		E7599B18E4E9AB9DF80AF458 /* IngestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngestView.swift; sourceTree = "<group>"; };
+		F21F341179391DC72B466A29 /* ByteCountFormatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ByteCountFormatting.swift; sourceTree = "<group>"; };
+		F6967799546D3792797BBE19 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FB4CDC7B61E4625FCE47DFB5 /* DiffEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffEntry.swift; sourceTree = "<group>"; };
+		FCC6FB133A548C6EB87E476D /* AppError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppError.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		07F5EDDDABE6F5CCC57A5321 /* WranglerTests */ = {
+			isa = PBXGroup;
+			children = (
+				D9F448140125801DDF2E092B /* ChecksumEngineTests.swift */,
+				D97DE9551CE934CF34A50CD0 /* CopyEngineTests.swift */,
+				292E904DFEDB1163686F06FA /* DiffEngineTests.swift */,
+				9C9A7B338A60B923C53F35D0 /* ReportGeneratorTests.swift */,
+			);
+			path = WranglerTests;
+			sourceTree = "<group>";
+		};
+		0B836F92EC1E11601B5E0E55 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				1C6FEE2AEBBBDD77256F743C /* BackupSession.swift */,
+				3A22070D2938305C63434366 /* FileBrowserModel.swift */,
+				D2C3EAAF8ADDB7D6E5C8DED0 /* IngestSession.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		11F353C4C96DBE274AE64BE2 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				F21F341179391DC72B466A29 /* ByteCountFormatting.swift */,
+				A019E7EE678D0F1662582B4D /* DateFormatting.swift */,
+				3407A568A288DBF1C0840203 /* FileManagerExtensions.swift */,
+				E1E1D19DC2282BEAE2701DEF /* ReportGenerator.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		2A1B9CEFA33E323569B92D40 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F6967799546D3792797BBE19 /* Assets.xcassets */,
+				9F47B4F375C71810C5DFDE32 /* Wrangler.entitlements */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		3538BECDDE2D93291715D2C1 /* Ingest */ = {
+			isa = PBXGroup;
+			children = (
+				6DEA78770AF2590E0B8D4F5A /* FileBrowserPane.swift */,
+				CF774AC58AEF06FDE7513250 /* FileRowView.swift */,
+				E3201706B0B14961E42A92FE /* IngestProgressView.swift */,
+				E7599B18E4E9AB9DF80AF458 /* IngestView.swift */,
+			);
+			path = Ingest;
+			sourceTree = "<group>";
+		};
+		37F23002046451D6AAD92CAA /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D349FB9000268DACADDE1593 /* ContentView.swift */,
+				F11A1DB83DFFE7660AF129C2 /* Backup */,
+				3538BECDDE2D93291715D2C1 /* Ingest */,
+				FDFE7C1455F448F3A9F4B22F /* Report */,
+				A835500720CA63F3F723C603 /* Shared */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		49BA899E33BCF082910FD151 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				B35732010F1C5380BB7BBF33 /* AppState.swift */,
+				E0E35626F080713F12BEFAFA /* WranglerApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		6993B9CE8FEEC7EA926E657E = {
+			isa = PBXGroup;
+			children = (
+				D0A567A829F0723B1EE403DB /* Wrangler */,
+				07F5EDDDABE6F5CCC57A5321 /* WranglerTests */,
+				C015D744316AABC5A21FD4A0 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		6CAF799E5A900F4C3D6E51F3 /* Engine */ = {
+			isa = PBXGroup;
+			children = (
+				975D5D9F286B04A3AEA732EB /* ChecksumEngine.swift */,
+				0479D5314D34974D9D9D7E5A /* CopyEngine.swift */,
+				909CC2F597D474547480C5C8 /* DiffEngine.swift */,
+				85219AC927D25370B4E27DF5 /* ThumbnailEngine.swift */,
+				5E632D979C752888FD1A0465 /* VolumeDetector.swift */,
+			);
+			path = Engine;
+			sourceTree = "<group>";
+		};
+		A835500720CA63F3F723C603 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				0F5DC2C1E3F7808FF5E8284C /* BlockProgressView.swift */,
+				19FFA48B8372991ADB7E2202 /* DirectoryPickerView.swift */,
+				CC38AE60D2CB4F7EB4C14CEC /* MediaThumbnailGrid.swift */,
+				7F6EAAC486DD8E33C2396961 /* ThroughputGaugeView.swift */,
+				4B8301B82242E38EA9FAD9B8 /* VolumeInfoView.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		C015D744316AABC5A21FD4A0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AF9021864D1D6E3F81F7CDCE /* Wrangler.app */,
+				C33AF0088BAEE304705E156A /* WranglerTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D0A567A829F0723B1EE403DB /* Wrangler */ = {
+			isa = PBXGroup;
+			children = (
+				49BA899E33BCF082910FD151 /* App */,
+				6CAF799E5A900F4C3D6E51F3 /* Engine */,
+				F4E548380DEA232791C0E9F3 /* Models */,
+				2A1B9CEFA33E323569B92D40 /* Resources */,
+				11F353C4C96DBE274AE64BE2 /* Utilities */,
+				0B836F92EC1E11601B5E0E55 /* ViewModels */,
+				37F23002046451D6AAD92CAA /* Views */,
+			);
+			path = Wrangler;
+			sourceTree = "<group>";
+		};
+		F11A1DB83DFFE7660AF129C2 /* Backup */ = {
+			isa = PBXGroup;
+			children = (
+				1644078674C0A39ED686A46C /* BackupDashboardView.swift */,
+				169CFDC26586C9A0988536FF /* BackupProgressView.swift */,
+				31F7967072A646891806038F /* BackupSetupView.swift */,
+				04BCBBF41D92E7EF310BDA0A /* DiffFilterSidebar.swift */,
+				3BB0F4701C9F1DB8C91C7002 /* DiffRowView.swift */,
+				1A7B736ABE9E221F1795C7A9 /* DiffTreeView.swift */,
+				693BF526529149C36BC736E0 /* DiffView.swift */,
+				575F7A472ABE8F859FFC6642 /* FileInspectorView.swift */,
+			);
+			path = Backup;
+			sourceTree = "<group>";
+		};
+		F4E548380DEA232791C0E9F3 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				FCC6FB133A548C6EB87E476D /* AppError.swift */,
+				5B215ED6F8239010B3838EEC /* CopyProgress.swift */,
+				FB4CDC7B61E4625FCE47DFB5 /* DiffEntry.swift */,
+				3B9750EFB442CE9DBB7AD87A /* DiffResult.swift */,
+				419B1451C41B6AAAFC6000E0 /* FileEntry.swift */,
+				021341A69C1E8B7CCCFA97AE /* SyncReport.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		FDFE7C1455F448F3A9F4B22F /* Report */ = {
+			isa = PBXGroup;
+			children = (
+				88BE8495AE52A84F6A0D866A /* ReportView.swift */,
+			);
+			path = Report;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		184FDB4605F75B22B3AD9CAC /* WranglerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 691D9D327959B4EE07A67DAE /* Build configuration list for PBXNativeTarget "WranglerTests" */;
+			buildPhases = (
+				A73409792D5B8007CA089239 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0CBAADE140C18444CC6B2AB8 /* PBXTargetDependency */,
+			);
+			name = WranglerTests;
+			packageProductDependencies = (
+			);
+			productName = WranglerTests;
+			productReference = C33AF0088BAEE304705E156A /* WranglerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		4D3247196F9B53E93B14B9D9 /* Wrangler */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6FC72FC167F461E1DE3BA819 /* Build configuration list for PBXNativeTarget "Wrangler" */;
+			buildPhases = (
+				2E94C7A2E3F8D6ED17ABC81D /* Sources */,
+				A833C7191DA768C72920C0EE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Wrangler;
+			packageProductDependencies = (
+			);
+			productName = Wrangler;
+			productReference = AF9021864D1D6E3F81F7CDCE /* Wrangler.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		80A2E4C48F7691C37C8326A9 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = A352A5AEB01A42E8D096DD1B /* Build configuration list for PBXProject "Wrangler" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 6993B9CE8FEEC7EA926E657E;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = C015D744316AABC5A21FD4A0 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				4D3247196F9B53E93B14B9D9 /* Wrangler */,
+				184FDB4605F75B22B3AD9CAC /* WranglerTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A833C7191DA768C72920C0EE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FCF65E5B4529644C06EC6713 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2E94C7A2E3F8D6ED17ABC81D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				839251B3C559E9DCB639BFB0 /* AppError.swift in Sources */,
+				F002C14108794F3CE23DB38E /* AppState.swift in Sources */,
+				BDDCA37464961A2C8B327145 /* BackupDashboardView.swift in Sources */,
+				CA6B2E005C0C44970E17095B /* BackupProgressView.swift in Sources */,
+				1B89A2B0244DC74C868D0FEB /* BackupSession.swift in Sources */,
+				35EFA34C0B09AC2FCDC637BC /* BackupSetupView.swift in Sources */,
+				3AFE4C5AB291DAE421D9D7B8 /* BlockProgressView.swift in Sources */,
+				B5BB9A42784038A5B34DDBEF /* ByteCountFormatting.swift in Sources */,
+				84E75564BD0AEBBAA5D95E43 /* ChecksumEngine.swift in Sources */,
+				732DDE4F895A9EEC4F3D1E8E /* ContentView.swift in Sources */,
+				D99D8EFC862FE022C52C4F41 /* CopyEngine.swift in Sources */,
+				9756A1A5AE099977FDCE8311 /* CopyProgress.swift in Sources */,
+				F48E0BD15979A9472EA440BE /* DateFormatting.swift in Sources */,
+				5FCF4869E97A2BCE8CD7A123 /* DiffEngine.swift in Sources */,
+				86BC2CDC9432E84EED8E8158 /* DiffEntry.swift in Sources */,
+				B9D640711CCCAB559FAF32AE /* DiffFilterSidebar.swift in Sources */,
+				0052677085833B43CEABD0E5 /* DiffResult.swift in Sources */,
+				5E5C591F2AD2845EBC8D3C5C /* DiffRowView.swift in Sources */,
+				45202E4ABD87B3B1A719E90B /* DiffTreeView.swift in Sources */,
+				6D2B2695A03AC9A55753C1F4 /* DiffView.swift in Sources */,
+				8DDE956EAC352295B339C83D /* DirectoryPickerView.swift in Sources */,
+				EA4097C6FB4162512B43AC45 /* FileBrowserModel.swift in Sources */,
+				184C426BB929D4B55DFD29E1 /* FileBrowserPane.swift in Sources */,
+				AEE2C38C42BF12A22667A785 /* FileEntry.swift in Sources */,
+				71EA3731001AF53CCD20FA58 /* FileInspectorView.swift in Sources */,
+				2E9FAFA947263D556CBF4CA3 /* FileManagerExtensions.swift in Sources */,
+				0667D53C6C80C8ED99BD01DB /* FileRowView.swift in Sources */,
+				4D023BAA52DE75BF15DFD19D /* IngestProgressView.swift in Sources */,
+				DD28184354FC274AC7BB96D4 /* IngestSession.swift in Sources */,
+				D6E0819C8B3B6BB9A1F74435 /* IngestView.swift in Sources */,
+				542790BB409303B0F489093F /* MediaThumbnailGrid.swift in Sources */,
+				08AC39C3F80A997395169E4B /* ReportGenerator.swift in Sources */,
+				BA3F286C049D5C510E091320 /* ReportView.swift in Sources */,
+				9978CA831A2252D82BA64BBD /* SyncReport.swift in Sources */,
+				448EE9E31ACBD7D2CB198701 /* ThroughputGaugeView.swift in Sources */,
+				C0E8E390ECFAB3B72D6DA681 /* ThumbnailEngine.swift in Sources */,
+				672D96A113C9363F689CAECD /* VolumeDetector.swift in Sources */,
+				4E3F7B7CAA0B0D4BBFFF125C /* VolumeInfoView.swift in Sources */,
+				C52D987FD7EFD57BB4B828B6 /* WranglerApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A73409792D5B8007CA089239 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9E28188CD3F0E39F62A9834A /* ChecksumEngineTests.swift in Sources */,
+				8D94FF001AE109B9B1CDB2C9 /* CopyEngineTests.swift in Sources */,
+				FE75348CF41A8E65CA481CF0 /* DiffEngineTests.swift in Sources */,
+				C70352B50C276F5AE87D7116 /* ReportGeneratorTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		0CBAADE140C18444CC6B2AB8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4D3247196F9B53E93B14B9D9 /* Wrangler */;
+			targetProxy = 3A2173904B98C3443BC01A24 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		0BB23DDA019D5E91CDF93BF4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		232AFBC498F42FCBE37638D6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Wrangler/Resources/Wrangler.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_GENERATION_MODE = GeneratedFile;
+				INFOPLIST_KEY_CFBundleDisplayName = Wrangler;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wrangler.app;
+				PRODUCT_NAME = Wrangler;
+				SDKROOT = macosx;
+				SWIFT_STRICT_CONCURRENCY = complete;
+			};
+			name = Debug;
+		};
+		446C7748A87FA29F478BE030 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Wrangler/Resources/Wrangler.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_GENERATION_MODE = GeneratedFile;
+				INFOPLIST_KEY_CFBundleDisplayName = Wrangler;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wrangler.app;
+				PRODUCT_NAME = Wrangler;
+				SDKROOT = macosx;
+				SWIFT_STRICT_CONCURRENCY = complete;
+			};
+			name = Release;
+		};
+		48B88F96EC76C7CF320E4A24 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.wrangler.tests;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Wrangler.app/Contents/MacOS/Wrangler";
+			};
+			name = Debug;
+		};
+		586F7FB81852E4403984CE10 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		AF2EF9681F0248E30E33F848 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.wrangler.tests;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Wrangler.app/Contents/MacOS/Wrangler";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		691D9D327959B4EE07A67DAE /* Build configuration list for PBXNativeTarget "WranglerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				48B88F96EC76C7CF320E4A24 /* Debug */,
+				AF2EF9681F0248E30E33F848 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		6FC72FC167F461E1DE3BA819 /* Build configuration list for PBXNativeTarget "Wrangler" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				232AFBC498F42FCBE37638D6 /* Debug */,
+				446C7748A87FA29F478BE030 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		A352A5AEB01A42E8D096DD1B /* Build configuration list for PBXProject "Wrangler" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				586F7FB81852E4403984CE10 /* Debug */,
+				0BB23DDA019D5E91CDF93BF4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 80A2E4C48F7691C37C8326A9 /* Project object */;
+}

@@ -1,0 +1,188 @@
+import Foundation
+import SwiftUI
+
+@Observable
+final class BackupSession {
+    enum Phase {
+        case setup
+        case scanning
+        case diffReview
+        case syncing
+        case dashboard
+    }
+
+    var phase: Phase = .setup
+    var sourceURL: URL?
+    var destinationURL: URL?
+    var diffResult: DiffResult = .empty
+    var scanProgress: DiffEngine.ScanProgress?
+    var copyProgress: CopyProgress = .idle
+    var syncReport: SyncReport?
+    var error: WranglerError?
+    var showError = false
+
+    private let diffEngine = DiffEngine()
+    private let copyEngine = CopyEngine()
+    private let thumbnailEngine = ThumbnailEngine()
+
+    var thumbnails: [String: NSImage] = [:]
+    var isScanning = false
+    var isSyncing = false
+
+    var canStartScan: Bool {
+        sourceURL != nil && destinationURL != nil && !isScanning
+    }
+
+    var canStartSync: Bool {
+        !diffResult.entries.isEmpty &&
+        (diffResult.summary.newOnSourceCount > 0 || diffResult.summary.modifiedCount > 0) &&
+        !isSyncing
+    }
+
+    func startScan() async {
+        guard let source = sourceURL, let dest = destinationURL else { return }
+
+        isScanning = true
+        phase = .scanning
+        scanProgress = nil
+
+        do {
+            let result = try await diffEngine.compare(
+                source: source,
+                destination: dest
+            ) { [weak self] progress in
+                Task { @MainActor in
+                    self?.scanProgress = progress
+                }
+            }
+
+            await MainActor.run {
+                self.diffResult = result
+                self.phase = .diffReview
+                self.isScanning = false
+            }
+
+            // Generate thumbnails in background
+            await generateThumbnails(source: source)
+
+        } catch {
+            await MainActor.run {
+                self.error = .scanFailed(underlying: error)
+                self.showError = true
+                self.isScanning = false
+                self.phase = .setup
+            }
+        }
+    }
+
+    func startSync() async {
+        guard let source = sourceURL, let dest = destinationURL else { return }
+
+        isSyncing = true
+        phase = .syncing
+        copyProgress = .idle
+
+        let filesToSync = diffResult.entries.filter {
+            $0.status == .newOnSource || $0.status == .modified
+        }
+
+        let copyItems = filesToSync.compactMap { entry -> (source: URL, destination: URL, relativePath: String, size: Int64)? in
+            guard let srcEntry = entry.sourceEntry else { return nil }
+            return (
+                source: source.appendingPathComponent(entry.relativePath),
+                destination: dest.appendingPathComponent(entry.relativePath),
+                relativePath: entry.relativePath,
+                size: srcEntry.fileSize
+            )
+        }
+
+        let startTime = Date.now
+
+        do {
+            let completed = try await copyEngine.copyFiles(files: copyItems) { [weak self] progress in
+                Task { @MainActor in
+                    self?.copyProgress = progress
+                }
+            }
+
+            let duration = Date.now.timeIntervalSince(startTime)
+
+            let report = SyncReport(
+                timestamp: .now,
+                sourceRoot: source,
+                destinationRoot: dest,
+                duration: duration,
+                averageThroughput: copyProgress.throughputBytesPerSecond,
+                filesCopied: completed.filter { _ in true }.map { file in
+                    SyncedFileRecord(
+                        relativePath: file.relativePath,
+                        fileSize: file.fileSize,
+                        modificationDate: .now,
+                        ownerName: nil,
+                        action: .copied,
+                        checksum: file.checksum
+                    )
+                },
+                filesUpdated: [],
+                filesSkipped: diffResult.entries.filter { $0.status == .identical }.map { entry in
+                    SyncedFileRecord(
+                        relativePath: entry.relativePath,
+                        fileSize: entry.sourceEntry?.fileSize ?? 0,
+                        modificationDate: entry.sourceEntry?.modificationDate ?? .now,
+                        ownerName: entry.sourceEntry?.ownerName,
+                        action: .skipped,
+                        checksum: entry.sourceEntry?.checksum
+                    )
+                },
+                filesDeleted: [],
+                errors: copyProgress.errors,
+                totalBytesTransferred: copyProgress.transferredBytes,
+                allVerified: completed.allSatisfy(\.verified)
+            )
+
+            await MainActor.run {
+                self.syncReport = report
+                self.isSyncing = false
+                self.phase = .dashboard
+            }
+
+        } catch {
+            await MainActor.run {
+                self.error = .copyFailed(file: "sync", underlying: error)
+                self.showError = true
+                self.isSyncing = false
+            }
+        }
+    }
+
+    func cancelSync() async {
+        await copyEngine.cancel()
+        isSyncing = false
+    }
+
+    func reset() {
+        phase = .setup
+        diffResult = .empty
+        copyProgress = .idle
+        syncReport = nil
+        scanProgress = nil
+        thumbnails = [:]
+    }
+
+    private func generateThumbnails(source: URL) async {
+        let mediaFiles = diffResult.entries
+            .filter { $0.sourceEntry?.isMediaFile == true }
+            .compactMap { entry -> URL? in
+                source.appendingPathComponent(entry.relativePath)
+            }
+
+        let thumbs = await thumbnailEngine.generateThumbnails(for: mediaFiles)
+
+        await MainActor.run {
+            for (path, image) in thumbs {
+                let relativePath = path.replacingOccurrences(of: source.path + "/", with: "")
+                self.thumbnails[relativePath] = image
+            }
+        }
+    }
+}

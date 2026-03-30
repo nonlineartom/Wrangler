@@ -1,0 +1,52 @@
+name: Wrangler
+options:
+  bundleIdPrefix: com.wrangler
+  deploymentTarget:
+    macOS: "15.0"
+  xcodeVersion: "16.0"
+  createIntermediateGroups: true
+  defaultConfig: Debug
+
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MACOSX_DEPLOYMENT_TARGET: "15.0"
+
+targets:
+  Wrangler:
+    type: application
+    platform: macOS
+    sources:
+      - path: Wrangler
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.wrangler.app
+        PRODUCT_NAME: Wrangler
+        MARKETING_VERSION: "1.0.0"
+        CURRENT_PROJECT_VERSION: "1"
+        INFOPLIST_GENERATION_MODE: GeneratedFile
+        INFOPLIST_KEY_CFBundleDisplayName: Wrangler
+        INFOPLIST_KEY_LSApplicationCategoryType: "public.app-category.utilities"
+        INFOPLIST_KEY_NSHumanReadableCopyright: ""
+        GENERATE_INFOPLIST_FILE: YES
+        ENABLE_HARDENED_RUNTIME: YES
+        CODE_SIGN_ENTITLEMENTS: ""
+        SWIFT_STRICT_CONCURRENCY: complete
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+    entitlements:
+      path: Wrangler/Resources/Wrangler.entitlements
+      properties:
+        com.apple.security.app-sandbox: false
+        com.apple.security.files.user-selected.read-write: true
+
+  WranglerTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: WranglerTests
+    dependencies:
+      - target: Wrangler
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.wrangler.tests
+        GENERATE_INFOPLIST_FILE: YES
