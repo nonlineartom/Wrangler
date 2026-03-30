@@ -75,6 +75,7 @@ struct FileBrowserPane: View {
                 Text("Size").tag(FileBrowserModel.SortOrder.size)
             }
             .pickerStyle(.segmented)
+            .labelsHidden()
             .frame(width: 150)
         }
     }

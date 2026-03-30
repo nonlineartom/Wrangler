@@ -20,6 +20,7 @@
 		4D023BAA52DE75BF15DFD19D /* IngestProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3201706B0B14961E42A92FE /* IngestProgressView.swift */; };
 		4E3F7B7CAA0B0D4BBFFF125C /* VolumeInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8301B82242E38EA9FAD9B8 /* VolumeInfoView.swift */; };
 		542790BB409303B0F489093F /* MediaThumbnailGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC38AE60D2CB4F7EB4C14CEC /* MediaThumbnailGrid.swift */; };
+		56E7A2408EA6ADC825A1FAA2 /* StorageMonitorBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB77A5F24C63468CF69F71DA /* StorageMonitorBar.swift */; };
 		5E5C591F2AD2845EBC8D3C5C /* DiffRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB0F4701C9F1DB8C91C7002 /* DiffRowView.swift */; };
 		5FCF4869E97A2BCE8CD7A123 /* DiffEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909CC2F597D474547480C5C8 /* DiffEngine.swift */; };
 		6294D0AE842F10658A38E02A /* TreemapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B678CBB309568E394CCF617 /* TreemapView.swift */; };
@@ -50,6 +51,7 @@
 		EA4097C6FB4162512B43AC45 /* FileBrowserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A22070D2938305C63434366 /* FileBrowserModel.swift */; };
 		F002C14108794F3CE23DB38E /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35732010F1C5380BB7BBF33 /* AppState.swift */; };
 		F48E0BD15979A9472EA440BE /* DateFormatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = A019E7EE678D0F1662582B4D /* DateFormatting.swift */; };
+		FC76E303CA35E95A8CBEE58C /* StorageMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9C49C77C34EA18544D1DCA7 /* StorageMonitor.swift */; };
 		FCF65E5B4529644C06EC6713 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F6967799546D3792797BBE19 /* Assets.xcassets */; };
 		FE75348CF41A8E65CA481CF0 /* DiffEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292E904DFEDB1163686F06FA /* DiffEngineTests.swift */; };
 /* End PBXBuildFile section */
@@ -98,6 +100,7 @@
 		A019E7EE678D0F1662582B4D /* DateFormatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatting.swift; sourceTree = "<group>"; };
 		AF9021864D1D6E3F81F7CDCE /* Wrangler.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wrangler.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B35732010F1C5380BB7BBF33 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		B9C49C77C34EA18544D1DCA7 /* StorageMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageMonitor.swift; sourceTree = "<group>"; };
 		C33AF0088BAEE304705E156A /* WranglerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WranglerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC38AE60D2CB4F7EB4C14CEC /* MediaThumbnailGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaThumbnailGrid.swift; sourceTree = "<group>"; };
 		CF774AC58AEF06FDE7513250 /* FileRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileRowView.swift; sourceTree = "<group>"; };
@@ -109,6 +112,7 @@
 		E1E1D19DC2282BEAE2701DEF /* ReportGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportGenerator.swift; sourceTree = "<group>"; };
 		E3201706B0B14961E42A92FE /* IngestProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngestProgressView.swift; sourceTree = "<group>"; };
 		E7599B18E4E9AB9DF80AF458 /* IngestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngestView.swift; sourceTree = "<group>"; };
+		EB77A5F24C63468CF69F71DA /* StorageMonitorBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageMonitorBar.swift; sourceTree = "<group>"; };
 		F21F341179391DC72B466A29 /* ByteCountFormatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ByteCountFormatting.swift; sourceTree = "<group>"; };
 		F6967799546D3792797BBE19 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FB4CDC7B61E4625FCE47DFB5 /* DiffEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffEntry.swift; sourceTree = "<group>"; };
@@ -204,6 +208,7 @@
 				975D5D9F286B04A3AEA732EB /* ChecksumEngine.swift */,
 				0479D5314D34974D9D9D7E5A /* CopyEngine.swift */,
 				909CC2F597D474547480C5C8 /* DiffEngine.swift */,
+				B9C49C77C34EA18544D1DCA7 /* StorageMonitor.swift */,
 				85219AC927D25370B4E27DF5 /* ThumbnailEngine.swift */,
 				5E632D979C752888FD1A0465 /* VolumeDetector.swift */,
 			);
@@ -216,6 +221,7 @@
 				0F5DC2C1E3F7808FF5E8284C /* BlockProgressView.swift */,
 				19FFA48B8372991ADB7E2202 /* DirectoryPickerView.swift */,
 				CC38AE60D2CB4F7EB4C14CEC /* MediaThumbnailGrid.swift */,
+				EB77A5F24C63468CF69F71DA /* StorageMonitorBar.swift */,
 				7F6EAAC486DD8E33C2396961 /* ThroughputGaugeView.swift */,
 				7B678CBB309568E394CCF617 /* TreemapView.swift */,
 				4B8301B82242E38EA9FAD9B8 /* VolumeInfoView.swift */,
@@ -401,6 +407,8 @@
 				542790BB409303B0F489093F /* MediaThumbnailGrid.swift in Sources */,
 				08AC39C3F80A997395169E4B /* ReportGenerator.swift in Sources */,
 				BA3F286C049D5C510E091320 /* ReportView.swift in Sources */,
+				FC76E303CA35E95A8CBEE58C /* StorageMonitor.swift in Sources */,
+				56E7A2408EA6ADC825A1FAA2 /* StorageMonitorBar.swift in Sources */,
 				9978CA831A2252D82BA64BBD /* SyncReport.swift in Sources */,
 				448EE9E31ACBD7D2CB198701 /* ThroughputGaugeView.swift in Sources */,
 				C0E8E390ECFAB3B72D6DA681 /* ThumbnailEngine.swift in Sources */,

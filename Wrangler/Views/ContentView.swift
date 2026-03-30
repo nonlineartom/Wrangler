@@ -18,25 +18,31 @@ struct ContentView: View {
     }
 
     var body: some View {
-        NavigationSplitView {
-            List(AppMode.allCases, id: \.self, selection: $selectedMode) { mode in
-                Label(mode.rawValue, systemImage: mode.icon)
-                    .tag(mode)
-            }
-            .listStyle(.sidebar)
-            .navigationSplitViewColumnWidth(min: 160, ideal: 180, max: 200)
-        } detail: {
-            Group {
-                switch selectedMode {
-                case .backup:
-                    backupModeView
-                case .ingest:
-                    ingestModeView
+        VStack(spacing: 0) {
+            StorageMonitorBar()
+
+            Divider()
+
+            NavigationSplitView {
+                List(AppMode.allCases, id: \.self, selection: $selectedMode) { mode in
+                    Label(mode.rawValue, systemImage: mode.icon)
+                        .tag(mode)
                 }
+                .listStyle(.sidebar)
+                .navigationSplitViewColumnWidth(min: 160, ideal: 180, max: 200)
+            } detail: {
+                Group {
+                    switch selectedMode {
+                    case .backup:
+                        backupModeView
+                    case .ingest:
+                        ingestModeView
+                    }
+                }
+                .frame(minWidth: 900, minHeight: 600)
             }
-            .frame(minWidth: 900, minHeight: 600)
         }
-        .frame(minWidth: 1100, minHeight: 700)
+        .frame(minWidth: 1100, minHeight: 764)
     }
 
     @ViewBuilder
