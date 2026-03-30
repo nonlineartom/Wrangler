@@ -163,7 +163,7 @@ struct IngestView: View {
                 .fontWeight(.semibold)
 
             Text(session.errors.isEmpty
-                 ? "\(session.completedFiles.count) file\(session.completedFiles.count == 1 ? "" : "s") copied and verified"
+                 ? "\(session.completedFiles.count) file\(session.completedFiles.count == 1 ? "" : "s") copied and verified\(session.skippedFiles.isEmpty ? "" : " · \(session.skippedFiles.count) already existed")"
                  : "\(session.completedFiles.count) files copied · \(session.errors.count) errors")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
@@ -179,6 +179,29 @@ struct IngestView: View {
                     .padding(.vertical, 6)
                     .background(.green.opacity(0.1), in: Capsule())
                     .padding(.top, 8)
+            }
+
+            // Skipped files (already existed — not an error)
+            if !session.skippedFiles.isEmpty {
+                GroupBox {
+                    VStack(alignment: .leading, spacing: 4) {
+                        ForEach(session.skippedFiles.prefix(5)) { file in
+                            Label(file.relativePath, systemImage: "arrow.right.circle")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                        if session.skippedFiles.count > 5 {
+                            Text("+ \(session.skippedFiles.count - 5) more")
+                                .font(.caption2)
+                                .foregroundStyle(.tertiary)
+                        }
+                    }
+                } label: {
+                    Label("Already at destination — not overwritten", systemImage: "checkmark.shield")
+                        .foregroundStyle(.secondary)
+                }
+                .frame(maxWidth: 400)
+                .padding(.top, 16)
             }
 
             // Error list

@@ -138,12 +138,16 @@ final class BackupSession {
         let startTime = Date.now
 
         do {
-            let completed = try await copyEngine.copyFiles(files: copyItems) { [weak self] progress in
+            let result = try await copyEngine.copyFiles(
+                files: copyItems,
+                conflictPolicy: .safeReplace
+            ) { [weak self] progress in
                 Task { @MainActor in
                     self?.copyProgress = progress
                 }
             }
 
+            let completed = result.completed
             let duration = Date.now.timeIntervalSince(startTime)
 
             let report = SyncReport(

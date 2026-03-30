@@ -16,6 +16,7 @@ final class IngestSession {
     var copyProgress: CopyProgress = .idle
     var isCopying = false
     var completedFiles: [CompletedFile] = []
+    var skippedFiles: [SkippedFile] = []
     var errors: [CopyError] = []
 
     var thumbnails: [String: NSImage] = [:]
@@ -47,14 +48,18 @@ final class IngestSession {
             }
 
         do {
-            let completed = try await copyEngine.copyFiles(files: filesToCopy) { [weak self] progress in
+            let result = try await copyEngine.copyFiles(
+                files: filesToCopy,
+                conflictPolicy: .skipExisting
+            ) { [weak self] progress in
                 Task { @MainActor in
                     self?.copyProgress = progress
                 }
             }
 
             await MainActor.run {
-                self.completedFiles = completed
+                self.completedFiles = result.completed
+                self.skippedFiles  = result.skipped
                 self.errors = self.copyProgress.errors
                 self.isCopying = false
                 self.phase = .complete
@@ -81,6 +86,7 @@ final class IngestSession {
     func reset() {
         phase = .browsing
         completedFiles = []
+        skippedFiles = []
         errors = []
         copyProgress = .idle
     }
