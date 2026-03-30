@@ -24,12 +24,40 @@ final class IngestSession {
     private let copyEngine = CopyEngine()
     private let thumbnailEngine = ThumbnailEngine()
 
+    // MARK: - Space check
+
+    /// Total bytes of all currently-selected source entries.
+    var selectedTotalBytes: Int64 {
+        sourceModel.entries
+            .filter { selectedFiles.contains($0.relativePath) }
+            .reduce(Int64(0)) { $0 + $1.fileSize }
+    }
+
+    /// Available capacity on the destination volume (uses important-usage key
+    /// which accounts for purgeable space, same as Finder's "X GB available").
+    var destinationAvailableBytes: Int64 {
+        guard let destURL = destModel.currentURL else { return 0 }
+        let values = try? destURL.resourceValues(
+            forKeys: [.volumeAvailableCapacityForImportantUsageKey]
+        )
+        return values?.volumeAvailableCapacityForImportantUsage ?? 0
+    }
+
+    /// False when selected bytes exceed destination free space.
+    var destinationHasSpace: Bool {
+        guard !selectedFiles.isEmpty, destModel.currentURL != nil else { return true }
+        return selectedTotalBytes <= destinationAvailableBytes
+    }
+
     var canCopy: Bool {
-        !selectedFiles.isEmpty && destModel.currentURL != nil && !isCopying
+        !selectedFiles.isEmpty && destModel.currentURL != nil && !isCopying && destinationHasSpace
     }
 
     func copySelectedFiles() async {
         guard let destURL = destModel.currentURL else { return }
+
+        // Final space check — destination may have changed since the UI last polled
+        guard destinationHasSpace else { return }
 
         isCopying = true
         phase = .copying

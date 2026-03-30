@@ -109,12 +109,29 @@ struct IngestView: View {
                     .disabled(!session.canCopy)
                     .help("Copy selected files to destination")
 
-                    // Total size
+                    // Total size + space check
                     if let size = selectedTotalSize {
                         Text(size)
                             .font(.caption2)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(session.destinationHasSpace ? Color.secondary : Color.red)
                             .monospacedDigit()
+                    }
+
+                    if !session.destinationHasSpace {
+                        VStack(spacing: 3) {
+                            Image(systemName: "exclamationmark.triangle.fill")
+                                .font(.system(size: 14))
+                                .foregroundStyle(.red)
+                            Text("Not enough\nspace")
+                                .font(.system(size: 9, weight: .medium))
+                                .foregroundStyle(.red)
+                                .multilineTextAlignment(.center)
+                            Text("\(ByteCountFormatting.string(fromByteCount: session.destinationAvailableBytes)) free")
+                                .font(.system(size: 8))
+                                .foregroundStyle(.red.opacity(0.7))
+                                .monospacedDigit()
+                        }
+                        .padding(.top, 2)
                     }
                 }
             }
